@@ -71,7 +71,7 @@ draft: false
    - `CLOUDFLARE_ACCOUNT_ID`
 3. 推送代码到 `main`，Actions 会自动部署
 
-部署成功后访问：**https://my-personal-site.pages.dev**
+部署成功后访问：**https://lys11111-personal-site.pages.dev**
 
 ## 目录结构
 

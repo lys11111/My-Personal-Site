@@ -1,6 +1,6 @@
 # Cloudflare Pages 项目配置
 # 配合 GitHub Actions 或 `npx wrangler pages deploy dist` 使用
 
-name = "my-personal-site"
+name = "lys11111-personal-site"
 pages_build_output_dir = "dist"
 compatibility_date = "2025-05-29"

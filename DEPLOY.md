@@ -24,7 +24,7 @@
 3. 创建后复制 Token（只显示一次）
 
 > 常见失败原因：`Account ID` 填错、Token 没有 Pages 权限、Cloudflare 上还没有 Pages 项目。  
-> 工作流已自动尝试创建 `my-personal-site` 项目；若仍失败，请到 Dashboard → Workers & Pages → Create → Pages 手动创建同名项目。
+> 工作流已自动尝试创建 `lys11111-personal-site` 项目；若仍失败，请到 Dashboard → Workers & Pages → Create → Pages 手动创建同名项目。
 
 #### 3. 添加 GitHub Secrets
 
@@ -42,9 +42,9 @@
 
 首次成功部署后，站点地址为：
 
-**https://my-personal-site.pages.dev**
+**https://lys11111-personal-site.pages.dev**
 
-（可在 Cloudflare Dashboard → Workers & Pages → my-personal-site 中查看与绑定自定义域名）
+（可在 Cloudflare Dashboard → Workers & Pages → lys11111-personal-site 中查看与绑定自定义域名）
 
 ---
 
@@ -76,7 +76,7 @@
 ```bash
 npm install
 npm run build
-npx wrangler pages deploy dist --project-name=my-personal-site
+npx wrangler pages deploy dist --project-name=lys11111-personal-site
 ```
 
 需要本地登录 Cloudflare：`npx wrangler login`
