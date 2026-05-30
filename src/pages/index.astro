@@ -1,0 +1,114 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+import { isPublished } from '../lib/content';
+
+const allProjects = (await getCollection('projects'))
+  .filter((p) => isPublished(p.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const allLearning = (await getCollection('learning'))
+  .filter((l) => isPublished(l.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const featuredProjects = allProjects.filter((p) => p.data.featured).slice(0, 4);
+const recentLearning = allLearning.slice(0, 5);
+
+const allTags = [
+  ...new Set([
+    ...allProjects.flatMap((p) => p.data.tags),
+    ...allLearning.flatMap((l) => [...l.data.tags, l.data.category]),
+  ]),
+].slice(0, 12);
+---
+
+<PageLayout title="首页" description="龙文广 — AI 产品经理 · 学习与项目展示">
+  <section class="mb-16">
+    <p class="mb-4 text-sm tracking-widest text-[--color-accent] uppercase">Portfolio & Learning</p>
+    <h1 class="max-w-3xl font-serif text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+      把学习与构建的过程<br />
+      <span class="text-[--color-muted]">留在可分享的地方</span>
+    </h1>
+    <p class="mt-6 max-w-xl text-lg text-[--color-muted]">
+      AI 产品经理方向。这里记录跨学科学习笔记、Vibe Coding 项目原型，以及简历放不下的细节。
+    </p>
+    <div class="mt-8 flex flex-wrap gap-4">
+      <a
+        href="/projects"
+        class="rounded-lg bg-[--color-accent] px-5 py-2.5 text-sm font-medium text-[--color-bg] hover:bg-[--color-accent-dim]"
+      >
+        浏览项目
+      </a>
+      <a
+        href="/about"
+        class="rounded-lg border border-[--color-border] px-5 py-2.5 text-sm text-[--color-text] hover:border-[--color-accent] hover:text-[--color-accent]"
+      >
+        关于我
+      </a>
+    </div>
+  </section>
+
+  <section class="mb-16">
+    <div class="mb-6 flex items-end justify-between">
+      <h2 class="font-serif text-2xl font-medium">精选项目</h2>
+      <a href="/projects" class="text-sm text-[--color-muted] hover:text-[--color-accent]">查看全部 →</a>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {
+        featuredProjects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            date={project.data.date}
+            href={`/projects/${project.id}`}
+            status={project.data.status}
+            tags={project.data.tags}
+            techStack={project.data.techStack}
+            featured={project.data.featured}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mb-16 grid gap-6 lg:grid-cols-3">
+    <div class="lg:col-span-2">
+      <div class="mb-6 flex items-end justify-between">
+        <h2 class="font-serif text-2xl font-medium">最近学习</h2>
+        <a href="/learning" class="text-sm text-[--color-muted] hover:text-[--color-accent]">查看全部 →</a>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {
+          recentLearning.map((article) => (
+            <ArticleCard
+              title={article.data.title}
+              description={article.data.description}
+              date={article.data.date}
+              href={`/learning/${article.id}`}
+              tags={article.data.tags}
+              category={article.data.category}
+              featured={article.data.featured}
+            />
+          ))
+        }
+      </div>
+    </div>
+    <div class="rounded-xl border border-[--color-border] bg-[--color-surface] p-6">
+      <h2 class="mb-4 font-serif text-lg font-medium">探索标签</h2>
+      <div class="flex flex-wrap gap-2">
+        {
+          allTags.map((tag) => (
+            <span class="rounded-full border border-[--color-border] px-3 py-1 text-xs text-[--color-muted]">
+              {tag}
+            </span>
+          ))
+        }
+      </div>
+      <p class="mt-6 text-sm text-[--color-muted]">
+        涵盖 AI 产品、Prompt 工程、互动游戏、计算机视觉等方向。持续更新中。
+      </p>
+    </div>
+  </section>
+</PageLayout>

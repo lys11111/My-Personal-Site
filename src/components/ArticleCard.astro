@@ -1,0 +1,36 @@
+---
+import { formatDate } from '../lib/content';
+import TagList from './TagList.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  href: string;
+  tags?: string[];
+  category?: string;
+  featured?: boolean;
+}
+
+const { title, description, date, href, tags = [], category, featured = false } = Astro.props;
+---
+
+<a
+  href={href}
+  class="group flex h-full flex-col rounded-xl border border-[--color-border] bg-[--color-surface] p-5 transition-all hover:border-[--color-accent]/40 hover:bg-[--color-surface-hover]"
+>
+  <div class="mb-3 flex items-center justify-between gap-2 text-xs text-[--color-muted]">
+    <time datetime={date.toISOString()}>{formatDate(date)}</time>
+    {category && <span>{category}</span>}
+    {featured && <span class="text-[--color-accent]">精选</span>}
+  </div>
+  <h3 class="font-serif text-lg font-medium text-[--color-text] group-hover:text-[--color-accent]">
+    {title}
+  </h3>
+  <p class="mt-2 line-clamp-2 flex-1 text-sm text-[--color-muted]">{description}</p>
+  {tags.length > 0 && (
+    <div class="mt-4">
+      <TagList tags={tags.slice(0, 4)} muted />
+    </div>
+  )}
+</a>

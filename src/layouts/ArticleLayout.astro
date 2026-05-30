@@ -1,0 +1,86 @@
+---
+import PageLayout from './PageLayout.astro';
+import TagList from '../components/TagList.astro';
+import { formatDate } from '../lib/content';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  tags?: string[];
+  category?: string;
+  status?: string;
+  demoUrl?: string;
+  repoUrl?: string;
+  techStack?: string[];
+}
+
+const {
+  title,
+  description,
+  date,
+  tags = [],
+  category,
+  status,
+  demoUrl,
+  repoUrl,
+  techStack = [],
+} = Astro.props;
+---
+
+<PageLayout title={title} description={description}>
+  <article>
+    <header class="mb-10 border-b border-[--color-border] pb-8">
+      <div class="mb-3 flex flex-wrap items-center gap-3 text-sm text-[--color-muted]">
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        {category && (
+          <span class="rounded-full border border-[--color-border] px-2.5 py-0.5">{category}</span>
+        )}
+        {status && (
+          <span class="rounded-full bg-[--color-accent]/15 px-2.5 py-0.5 text-[--color-accent]">
+            {status}
+          </span>
+        )}
+      </div>
+      <h1 class="font-serif text-4xl font-semibold tracking-tight text-[--color-text]">{title}</h1>
+      <p class="mt-4 max-w-2xl text-lg text-[--color-muted]">{description}</p>
+      {(demoUrl || repoUrl) && (
+        <div class="mt-6 flex flex-wrap gap-3">
+          {demoUrl && (
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="rounded-lg bg-[--color-accent] px-4 py-2 text-sm font-medium text-[--color-bg] hover:bg-[--color-accent-dim]"
+            >
+              查看 Demo
+            </a>
+          )}
+          {repoUrl && (
+            <a
+              href={repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="rounded-lg border border-[--color-border] px-4 py-2 text-sm text-[--color-text] hover:border-[--color-accent] hover:text-[--color-accent]"
+            >
+              GitHub
+            </a>
+          )}
+        </div>
+      )}
+      {techStack.length > 0 && (
+        <div class="mt-6">
+          <TagList tags={techStack} />
+        </div>
+      )}
+      {tags.length > 0 && (
+        <div class="mt-4">
+          <TagList tags={tags} muted />
+        </div>
+      )}
+    </header>
+    <div class="prose-content">
+      <slot />
+    </div>
+  </article>
+</PageLayout>

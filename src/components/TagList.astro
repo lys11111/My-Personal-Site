@@ -1,0 +1,25 @@
+---
+interface Props {
+  tags: string[];
+  muted?: boolean;
+}
+
+const { tags, muted = false } = Astro.props;
+---
+
+<div class="flex flex-wrap gap-2">
+  {
+    tags.map((tag) => (
+      <span
+        class:list={[
+          'rounded-full px-2.5 py-0.5 text-xs',
+          muted
+            ? 'border border-[--color-border] text-[--color-muted]'
+            : 'bg-[--color-surface] text-[--color-accent]',
+        ]}
+      >
+        {tag}
+      </span>
+    ))
+  }
+</div>

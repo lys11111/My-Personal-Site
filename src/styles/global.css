@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  --color-bg: #0a0a0b;
+  --color-surface: #141416;
+  --color-surface-hover: #1c1c1f;
+  --color-border: #2a2a2e;
+  --color-text: #e8e6e3;
+  --color-muted: #9a9690;
+  --color-accent: #d4a574;
+  --color-accent-dim: #a67c52;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[--color-bg] text-[--color-text] font-sans antialiased;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  .prose-content {
+    @apply max-w-[720px] leading-relaxed text-[--color-text];
+  }
+
+  .prose-content h1,
+  .prose-content h2,
+  .prose-content h3 {
+    @apply font-serif text-[--color-text] mt-8 mb-4;
+  }
+
+  .prose-content h1 {
+    @apply text-3xl;
+  }
+
+  .prose-content h2 {
+    @apply text-2xl border-b border-[--color-border] pb-2;
+  }
+
+  .prose-content h3 {
+    @apply text-xl;
+  }
+
+  .prose-content p {
+    @apply mb-4 text-[--color-muted];
+  }
+
+  .prose-content ul,
+  .prose-content ol {
+    @apply mb-4 pl-6 text-[--color-muted];
+  }
+
+  .prose-content li {
+    @apply mb-2;
+  }
+
+  .prose-content a {
+    @apply text-[--color-accent] underline-offset-4 hover:underline;
+  }
+
+  .prose-content code {
+    @apply rounded bg-[--color-surface] px-1.5 py-0.5 text-sm text-[--color-accent];
+  }
+
+  .prose-content pre {
+    @apply mb-4 overflow-x-auto rounded-lg border border-[--color-border] bg-[--color-surface] p-4 text-sm;
+  }
+
+  .prose-content blockquote {
+    @apply border-l-2 border-[--color-accent] pl-4 italic text-[--color-muted];
+  }
+}
