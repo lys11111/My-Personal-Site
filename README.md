@@ -61,20 +61,17 @@ draft: false
 
 ## Cloudflare Pages 部署
 
-1. 将本仓库推送到 GitHub
-2. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/) → Workers & Pages → Create → Connect to Git
-3. 选择仓库，配置构建设置：
+已配置 GitHub Actions 自动部署。完整步骤见 **[DEPLOY.md](./DEPLOY.md)**。
 
-| 设置项 | 值 |
-|--------|-----|
-| Framework preset | Astro |
-| Build command | `npm run build` |
-| Build output directory | `dist` |
-| Node version | `20` 或 `22` |
+**快速开始：**
 
-4. 保存后每次 `git push` 到主分支会自动部署
+1. 在 Cloudflare 创建 API Token（Pages Edit 权限）
+2. 在 GitHub 仓库 Settings → Secrets 添加：
+   - `CLOUDFLARE_API_TOKEN`
+   - `CLOUDFLARE_ACCOUNT_ID`
+3. 推送代码到 `main`，Actions 会自动部署
 
-免费子域名格式：`your-project.pages.dev`
+部署成功后访问：**https://my-personal-site.pages.dev**
 
 ## 目录结构
 
