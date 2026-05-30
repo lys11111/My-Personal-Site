@@ -17,10 +17,14 @@
 #### 2. 创建 API Token
 
 1. 打开 [API Tokens](https://dash.cloudflare.com/profile/api-tokens)
-2. **Create Token** → 使用模板 **Edit Cloudflare Workers** 或自定义：
-   - Permissions: **Account** → **Cloudflare Pages** → **Edit**
-   - Account Resources: 包含你的账号
+2. **Create Token** → 选择 **Edit Cloudflare Workers** 模板，或自定义权限：
+   - **Account** → **Cloudflare Pages** → **Edit**
+   - **Account** → **Account Settings** → **Read**（可选，用于读取账号信息）
+   - Account Resources: **Include** → 选择你的账号
 3. 创建后复制 Token（只显示一次）
+
+> 常见失败原因：`Account ID` 填错、Token 没有 Pages 权限、Cloudflare 上还没有 Pages 项目。  
+> 工作流已自动尝试创建 `my-personal-site` 项目；若仍失败，请到 Dashboard → Workers & Pages → Create → Pages 手动创建同名项目。
 
 #### 3. 添加 GitHub Secrets
 
