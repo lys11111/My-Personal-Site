@@ -26,9 +26,12 @@ const projectNavGroups = [
 ];
 ---
 
-<header class="sticky top-0 z-50 border-b border-[--color-border]/80 bg-[--color-bg]/90 backdrop-blur-md">
+<header class="sticky top-0 z-50 border-b border-neutral-200 bg-white shadow-sm">
   <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-    <a href="/" class="font-serif text-lg font-semibold tracking-wide text-[--color-text] hover:text-[--color-accent]">
+    <a
+      href="/"
+      class="font-serif text-lg font-semibold tracking-wide text-neutral-900 hover:text-[--color-accent]"
+    >
       龙文广
     </a>
     <ul class="flex items-center gap-1 sm:gap-2">
@@ -39,7 +42,7 @@ const projectNavGroups = [
             'rounded-md px-3 py-2 text-sm transition-colors',
             currentPath === '/'
               ? 'text-[--color-accent]'
-              : 'text-[--color-muted] hover:text-[--color-text]',
+              : 'text-neutral-600 hover:text-neutral-900',
           ]}
         >
           首页
@@ -78,7 +81,7 @@ const projectNavGroups = [
                 'rounded-md px-3 py-2 text-sm transition-colors',
                 currentPath.startsWith(item.href)
                   ? 'text-[--color-accent]'
-                  : 'text-[--color-muted] hover:text-[--color-text]',
+                  : 'text-neutral-600 hover:text-neutral-900',
               ]}
             >
               {item.label}
