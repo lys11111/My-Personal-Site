@@ -6,11 +6,14 @@ status: prototype
 tags: ["H5", "Game", "Three.js", "Gyroscope"]
 featured: true
 cover: /images/projects/tidegrain-bay-cover.webp
+coverVideo: /videos/projects/tidegrain-bay-demo.mp4
 repoUrl: https://github.com/lys11111/Tidegrain_Bay
 techStack: ["HTML5", "Three.js", "DeviceOrientation", "Vibe Coding"]
 platform: "android"
 listLayout: split
 ---
+
+> 页顶为可播放 Demo 录屏（陀螺仪全景玩法）；列表与卡片仍使用封面静图。
 
 ## 项目简介
 

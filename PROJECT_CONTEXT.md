@@ -112,7 +112,11 @@ personal-site/
 │   ├── projects.ts             项目列表 / 导航下拉共用分组与顺序（androidProjectIds 等）
 │   └── badges.ts               项目 status 等徽章文案与样式
 ├── src/styles/global.css       全局样式、主题色、prose 排版
-├── public/                     静态文件（favicon、将来放 resume.pdf）
+├── public/                     静态文件（images、videos、files、favicon）
+├── scripts/                    项目封面批量截图（Playwright）
+│   ├── capture-project-screenshots.mjs
+│   └── capture-auto-short-drama.mjs
+├── prototype-demo-toolkit/     原型 Demo 录屏（见 docs/原型demo自动化.md）
 ├── astro.config.mjs            Astro + Tailwind + MDX 配置
 ├── wrangler.toml               Cloudflare 项目名（lys11111-personal-site）
 └── .github/workflows/          自动部署流水线（一般不用改）
@@ -134,6 +138,7 @@ personal-site/
 | 改项目列表页分组 / 排序 | `src/lib/projects.ts`（`androidProjectIds` / `webProjectIds`）+ `src/pages/projects/index.astro` |
 | 改项目卡片 / 列表样式 | `ProjectCard.astro`、`ProjectListItem.astro` |
 | 新增 frontmatter 字段 | `src/content.config.ts` + 对应 layout/页面 |
+| 改 Markdown 表格排版 | `src/styles/global.css` → `.prose-content table`（全宽均分列） |
 | 改部署/Cloudflare | `.github/workflows/deploy-cloudflare-pages.yml` |
 
 ---
@@ -174,7 +179,8 @@ status: "prototype"         # demo | prototype | archived
 tags: ["Electron"]
 demoUrl: "https://..."      # 可选，有则显示「查看 Demo」
 repoUrl: "https://github.com/..."  # 可选，有则显示 GitHub 按钮
-cover: "/images/projects/xxx-cover.webp"  # 可选，首页卡片 + 列表页 + 详情头图
+cover: "/images/projects/xxx-cover.webp"  # 可选，列表/卡片 + 无 coverVideo 时的详情头图
+coverVideo: "/videos/projects/xxx-demo.mp4"  # 可选，详情页头图区可播放视频（poster 用 cover）
 featured: true                # true 出现在首页「精选项目」
 techStack: ["Electron", "Vite"]
 platform: "web"              # android | web — 项目列表页分组展示
@@ -241,15 +247,17 @@ draft: false
 | Demo 视频 | 能 | 小视频放 `public/videos/`，正文用 HTML `<video>`；大视频建议 B 站 / YouTube 链接 |
 | 可下载文件（PDF、zip 等） | 能 | 放 `public/files/`，正文 `[下载说明](/files/xxx.pdf)` |
 | 内嵌在线 Demo | 部分能 | 正文 `<iframe src="https://...">`（目标站须允许嵌入）；否则只用 `demoUrl` 新开标签页 |
-| 项目封面 `cover` | 能 | frontmatter 填 `/images/projects/xxx-cover.png`；首页卡片与详情页头图已接入 |
+| 项目封面 `cover` | 能 | frontmatter；列表/首页卡片；`coverVideo` 存在时作视频 poster |
+| 详情页 Demo 视频 `coverVideo` | 能 | frontmatter 填 `/videos/projects/xxx.mp4`；列表仍用 `cover` 静图 |
 
 ### 推荐 `public/` 目录
 
 ```text
 public/
 ├── images/
-│   └── projects/    # 项目封面与截图（当前 7 个项目，见下文清单）
-├── videos/          # mp4/webm（建议单文件 < 20MB）
+│   └── projects/    # 封面与截图（7 个项目，见「项目总览」）
+├── videos/
+│   └── projects/    # 详情页 coverVideo（穗潮湾 / 闺蜜眼镜 / 摸鱼海湾等）
 ├── files/           # 可下载 md/PDF 等
 └── resume.pdf       # 简历（about 页可链到 /resume.pdf）
 ```
@@ -333,7 +341,47 @@ export const webProjectIds = ['shiki-desktop-pet', 'auto-short-drama'] as const;
 
 ---
 
-## 当前已有内容（截至 2026-05-31）
+## 项目总览（2026-05-31）
+
+本站共 **7 个项目**（全部 `featured: true`），按 **安卓端 H5/穿戴原型** 与 **Web/桌面工具** 分两栏展示。正文以 Markdown 撰写；列表用 `cover` 静图，部分详情页用 `coverVideo` 在头图区直接播放 Demo。
+
+### 一句话定位
+
+| slug | 标题 | 核心方向 |
+|------|------|----------|
+| `emovision-glasses` | EmoVision · 闺蜜眼镜 | 南客松 S2 优秀 — Rokid 眼镜第一视角情绪识别 + Web 无硬件演示 |
+| `aifit-mobile` | AIFIT · AI 健身 App | MediaPipe 姿态识别 + 移动端训练/打卡原型 |
+| `tidegrain-bay` | Tidegrain Bay · 穗潮湾 | 陀螺仪 3DoF 全景 H5 轻经营，四场景一日回环 |
+| `idle-cove` | Idle Cove · 摸鱼海湾 | 单文件 Canvas 竖屏钩钓，办公室「摸鱼」叙事 |
+| `liangxiangzhi` | Liangxiangzhi · 两相知 | 古籍仪式感 H5 + 本地面相取象 + 关系合参 |
+| `shiki-desktop-pet` | Shiki · 桌宠 Agent | Electron 透明桌宠 + FastAPI 对话与角色包孵化 |
+| `auto-short-drama` | Auto Short Drama · 短剧创作工作台 | 对话式 AIGC 短剧 — 故事方向 → 场景 → 分镜 |
+
+### 媒体与外链
+
+| slug | status | 详情页视频 | GitHub / Demo |
+|------|--------|------------|---------------|
+| `emovision-glasses` | prototype | `emovision-glasses-demo.mp4`（宣传） | 无公开仓库 |
+| `aifit-mobile` | prototype | — | [AI-Fit](https://github.com/lys11111/AI-Fit) |
+| `tidegrain-bay` | prototype | `tidegrain-bay-demo.mp4` | [Tidegrain_Bay](https://github.com/lys11111/Tidegrain_Bay) |
+| `idle-cove` | demo | `idle-cove-demo.mp4` | 单文件 H5，无仓库 |
+| `liangxiangzhi` | demo | — | [liangxiangzhi-prototype](https://github.com/Valeera723/liangxiangzhi-prototype) |
+| `shiki-desktop-pet` | prototype | — | 本地 `桌宠开发-shiki/`，无在线 Demo |
+| `auto-short-drama` | prototype | — | 本地 `AIGC工作流辅助/auto-short-drama/` |
+
+视频路径：`public/videos/projects/`。单文件建议 **< 20MB**（Cloudflare 上限约 25MB）。
+
+### 封面与截图脚本
+
+| 命令 | 覆盖项目 |
+|------|----------|
+| `node scripts/capture-project-screenshots.mjs` | AIFIT、两相知、Shiki（需工作区兄弟目录 + Playwright） |
+| `node scripts/capture-auto-short-drama.mjs` | 短剧工作台（Vite :4173） |
+| `prototype-demo-toolkit` → `npm run demo:record` | Web/H5 自动录屏，见 [`docs/原型demo自动化.md`](./docs/原型demo自动化.md) |
+
+---
+
+## 当前已有内容（清单）
 
 ### 项目 `src/content/projects/`（7 篇）
 
@@ -351,32 +399,30 @@ export const webProjectIds = ['shiki-desktop-pet', 'auto-short-drama'] as const;
 
 | slug | 标题 | platform | 列表排版 | 封面 / 链接 |
 |------|------|----------|----------|-------------|
-| `emovision-glasses` | EmoVision · 闺蜜眼镜 | android | split | `emovision-cover.webp`（易拉宝压缩 WebP；列表左栏 9:16 框内缩放） |
-| `aifit-mobile` | AIFIT · AI 健身 App | android | split | `aifit-cover.png`；[GitHub](https://github.com/lys11111/AI-Fit) |
-| `tidegrain-bay` | Tidegrain Bay · 穗潮湾 | android | split | `tidegrain-bay-cover.webp`；[GitHub](https://github.com/lys11111/Tidegrain_Bay) |
-| `idle-cove` | Idle Cove · 摸鱼海湾 | android | split | `idle-cove-cover.webp`；单文件 H5 本地 `index.html` |
-| `liangxiangzhi` | Liangxiangzhi · 两相知 AI 文创关系签 | android | split | `liangxiangzhi-cover.png`；[GitHub](https://github.com/Valeera723/liangxiangzhi-prototype) |
-| `shiki-desktop-pet` | Shiki · 桌宠 Agent | web | stack | `shiki-cover.png` + UI 截图 |
-| `auto-short-drama` | Auto Short Drama · 短剧创作工作台 | web | stack | 无封面 |
+| `emovision-glasses` | EmoVision · 闺蜜眼镜 | android | split | 封面 WebP + **详情页宣传视频** |
+| `aifit-mobile` | AIFIT · AI 健身 App | android | split | 封面 + 欢迎/训练截图；[GitHub](https://github.com/lys11111/AI-Fit) |
+| `tidegrain-bay` | Tidegrain Bay · 穗潮湾 | android | split | 封面 WebP + **详情页 Demo 视频**；[GitHub](https://github.com/lys11111/Tidegrain_Bay) |
+| `idle-cove` | Idle Cove · 摸鱼海湾 | android | split | 封面 WebP + **详情页 Demo 视频** |
+| `liangxiangzhi` | Liangxiangzhi · 两相知 AI 文创关系签 | android | split | 封面 + 流程截图；[GitHub](https://github.com/Valeera723/liangxiangzhi-prototype) |
+| `shiki-desktop-pet` | Shiki · 桌宠 Agent | web | stack | 封面 + UI 截图（Vite 开发界面） |
+| `auto-short-drama` | Auto Short Drama · 短剧创作工作台 | web | stack | 封面 + 设置页截图（Vite 首页） |
 
-静态资源：`public/images/projects/`、`public/files/`。
+静态资源：`public/images/projects/`、`public/videos/projects/`、`public/files/`。
 
-- 批量截图（AIFIT / 两相知 / Shiki）：`node scripts/capture-project-screenshots.mjs`（需 Playwright）
-- 单页 H5 封面：可用 Playwright 打开本地 `index.html` 截图 → 压缩为 WebP 放入 `public/images/projects/`（单文件建议 < 500KB，部署上限约 25MB/文件）
-- 大图封面优先 **WebP**（如 EmoVision 原 PNG ~48MB 超限，已改为 ~372KB WebP）
+### 学习 `src/content/learning/`（4 篇）
 
-### 学习 `src/content/learning/`
+| slug | 标题 | 分类 | 与项目关系 |
+|------|------|------|------------|
+| `prompt-json-constraints` | Prompt 工程中的 JSON 强约束实践 | AI产品 | 互动叙事 / LLM 结构化输出 |
+| `ai-game-mechanics` | AI 互动游戏的产品机制思考 | AI游戏 | 穗潮湾、摸鱼海湾等机制拆解 |
+| `game-art-ai-and-genres` | 游戏美术 AI 与玩法类型笔记 | AI游戏 | 美术 AI 三栏、玩法分类、核心循环、市场组合 |
+| `ai-film-industry` | AI 时代影视工业的变革 | AIGC | 虚拟制片、3DGS、世界模型与游戏场景启示 |
 
-| slug | 标题 |
-|------|------|
-| `prompt-json-constraints` | Prompt 工程中的 JSON 强约束实践 |
-| `ai-game-mechanics` | AI 互动游戏的产品机制思考 |
+### 随笔 `src/content/notes/`（1 篇）
 
-### 随笔 `src/content/notes/`
-
-| slug | 标题 |
-|------|------|
-| `how-this-site-works` | 这个网站是怎么运作的 |
+| slug | 标题 | 说明 |
+|------|------|------|
+| `how-this-site-works` | 这个网站是怎么运作的 | Astro 静态站与内容发布流程 |
 
 ---
 
@@ -411,7 +457,7 @@ export const webProjectIds = ['shiki-desktop-pet', 'auto-short-drama'] as const;
 | `--font-serif` | 标题字体 | Noto Serif SC |
 | `--font-sans` | 正文字体 | Inter / 系统 sans |
 
-正文区域使用 `.prose-content` 类控制 Markdown 渲染样式。
+正文区域使用 `.prose-content`：段落约 `max-w-3xl`；**Markdown 表格**全宽、`table-layout: fixed` 均分列，带边框与行 hover（见 `global.css`）。
 
 ---
 
@@ -455,7 +501,7 @@ git add . && git commit -m "content: 新增 xxx 项目说明" && git push
    已在 `.gitignore` 中。
 
 6. **关于页联系方式**  
-   `src/pages/about.astro` 里邮箱仍是 `【待填】`，可按需补充；简历 PDF 可放 `public/resume.pdf`。
+   邮箱与电话见 `src/pages/about.astro`；简历 PDF 可放 `public/resume.pdf`。
 
 ---
 
@@ -466,10 +512,10 @@ git add . && git commit -m "content: 新增 xxx 项目说明" && git push
 | 网站项目 slug | 本地素材路径（工作区相对路径） |
 |---------------|-------------------------------|
 | shiki-desktop-pet | `../桌宠开发-shiki/` |
-| aifit-mobile | `../AI项目与简历整理/AI健身/AI健身app/` |
-| liangxiangzhi | `../AI项目与简历整理/AI面相识别与卦算 两相知/` |
+| aifit-mobile | `../AI项目与简历整理/AI健身/AI健身app/aifit-mobile-app/` |
+| liangxiangzhi | `../AI项目与简历整理/AI面相识别与卦算 两相知/liangxiangzhi-prototype-main/` |
 | emovision-glasses | `../AI项目与简历整理/南克松S2闺蜜眼镜项目/` |
-| auto-short-drama | `../AIGC工作流辅助/` |
+| auto-short-drama | `../AIGC工作流辅助/auto-short-drama/` |
 | idle-cove | `../AI项目与简历整理/AI 游戏相关/个人复刻摸金小游戏 摸鱼海湾/` |
 | tidegrain-bay | `../AI项目与简历整理/AI 游戏相关/AI+抖音游戏  穗潮湾/` |
 | 学习笔记素材 | `../AI项目与简历整理/`、`../AI 游戏相关/` 等 |

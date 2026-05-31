@@ -44,7 +44,60 @@
   }
 
   .prose-content {
-    @apply max-w-[720px] leading-relaxed text-[--color-text];
+    @apply w-full max-w-none leading-relaxed text-[--color-text];
+  }
+
+  /* 正文块保持可读行宽；表格 / 媒体占满内容区横轴 */
+  .prose-content > p,
+  .prose-content > ul,
+  .prose-content > ol,
+  .prose-content > blockquote,
+  .prose-content > pre,
+  .prose-content > h1,
+  .prose-content > h2,
+  .prose-content > h3,
+  .prose-content > hr {
+    @apply max-w-3xl;
+  }
+
+  .prose-content table {
+    @apply my-8 w-full max-w-none table-fixed border-collapse overflow-hidden rounded-lg border border-[--color-border] bg-[--color-surface]/40 text-sm;
+  }
+
+  .prose-content thead {
+    @apply bg-[--color-surface];
+  }
+
+  .prose-content th {
+    @apply border border-[--color-border] px-4 py-3.5 text-left align-top font-medium leading-snug text-[--color-text];
+    word-break: break-word;
+  }
+
+  .prose-content td {
+    @apply border border-[--color-border] px-4 py-3.5 align-top leading-relaxed text-[--color-muted];
+    word-break: break-word;
+  }
+
+  .prose-content tbody tr:nth-child(even) {
+    @apply bg-[--color-surface]/30;
+  }
+
+  .prose-content tbody tr:hover {
+    @apply bg-[--color-surface-hover]/60;
+  }
+
+  /** 窄屏：宽表横向滚动，避免列被压扁 */
+  @media (max-width: 768px) {
+    .prose-content table {
+      @apply block overflow-x-auto;
+    }
+
+    .prose-content table > * {
+      display: table;
+      width: 100%;
+      min-width: 32rem;
+      table-layout: fixed;
+    }
   }
 
   .prose-content h1,

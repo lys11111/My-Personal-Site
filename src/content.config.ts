@@ -26,6 +26,8 @@ const projects = defineCollection({
     demoUrl: z.string().optional(),
     repoUrl: z.string().optional(),
     cover: z.string().optional(),
+    /** 详情页头图区可播放视频（列表页仍用 cover 静图） */
+    coverVideo: z.string().optional(),
     featured: z.boolean().default(false),
     techStack: z.array(z.string()).default([]),
     /** android = 安卓端；web = Web 端（含 H5、桌面 Web、Electron 等） */

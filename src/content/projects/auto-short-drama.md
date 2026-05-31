@@ -4,6 +4,7 @@ description: "对话式 AIGC 短剧工作区 — 从故事方向、场景拓展�
 date: 2026-05-04
 status: "prototype"
 tags: ["AIGC", "Workflow", "LLM"]
+cover: "/images/projects/auto-short-drama-cover.png"
 featured: true
 techStack: ["FastAPI", "React", "TypeScript", "Vite", "LLM"]
 platform: "web"
@@ -14,6 +15,12 @@ draft: false
 ## 一句话定位
 
 面向短剧创作者与 AI 辅助内容团队的 **对话式创作工作台** —— 用一次 Prompt 启动工作区，在聊天中推进「故事方向 → 场景拓展 → 分镜拆解」，中间产物以结构化卡片沉淀，而不是散落在聊天记录里。
+
+> 页顶为本地 Vite 开发界面完整截图（首页创作入口）。完整功能需同时启动 FastAPI 后端并配置 LLM。
+
+## 更多界面
+
+![设置页](/images/projects/auto-short-drama-screenshot-ui.png)
 
 ## 项目背景
 
@@ -137,4 +144,4 @@ npm run dev
 ## 说明
 
 - 本项目为本地研发原型，暂无公开 GitHub 与在线 Demo
-- 封面截图可后续补充至 `public/images/projects/`
+- 封面与界面截图：`node scripts/capture-auto-short-drama.mjs`（需 `prototype-demo-toolkit` 已 `npm install`）

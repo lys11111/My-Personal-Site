@@ -27,10 +27,24 @@ import PageLayout from '../layouts/PageLayout.astro';
 
     <section class="mt-10">
       <h2 class="mb-4 font-serif text-xl text-[--color-text]">联系方式</h2>
-      <p class="text-[--color-muted]">
-        <!-- 替换为你的邮箱或其他联系方式 -->
-        邮箱：【待填】
-      </p>
+      <ul class="space-y-2 text-[--color-muted]">
+        <li>
+          邮箱：<a
+            href="mailto:2764628062@qq.com"
+            class="text-[--color-accent] hover:underline">2764628062@qq.com</a>
+        </li>
+        <li>
+          电话：<a href="tel:+8619967182179" class="text-[--color-accent] hover:underline"
+            >19967182179</a>
+        </li>
+        <li>
+          GitHub：<a
+            href="https://github.com/lys11111"
+            class="text-[--color-accent] hover:underline"
+            rel="noopener noreferrer"
+            target="_blank">lys11111</a>
+        </li>
+      </ul>
     </section>
   </div>
 </PageLayout>

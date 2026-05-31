@@ -15,6 +15,7 @@ interface Props {
   demoUrl?: string;
   repoUrl?: string;
   cover?: string;
+  coverVideo?: string;
   techStack?: string[];
 }
 
@@ -28,6 +29,7 @@ const {
   demoUrl,
   repoUrl,
   cover,
+  coverVideo,
   techStack = [],
 } = Astro.props;
 ---
@@ -47,15 +49,30 @@ const {
       <h1 class="font-serif text-4xl font-semibold tracking-tight text-[--color-text]">{title}</h1>
       <p class="mt-4 max-w-2xl text-lg text-[--color-muted]">{description}</p>
       {
-        cover && (
+        coverVideo ? (
           <div class="not-prose mt-8 w-full overflow-hidden rounded-xl border border-[--color-border] bg-[--color-bg] p-4">
-            <img
-              src={cover}
-              alt={`${title} 原型预览`}
+            <video
+              src={coverVideo}
+              controls
+              playsinline
+              preload="metadata"
+              poster={cover}
               class="mx-auto max-h-[min(85vh,960px)] w-full object-contain"
-              loading="eager"
-            />
+            >
+              您的浏览器不支持视频播放。
+            </video>
           </div>
+        ) : (
+          cover && (
+            <div class="not-prose mt-8 w-full overflow-hidden rounded-xl border border-[--color-border] bg-[--color-bg] p-4">
+              <img
+                src={cover}
+                alt={`${title} 原型预览`}
+                class="mx-auto max-h-[min(85vh,960px)] w-full object-contain"
+                loading="eager"
+              />
+            </div>
+          )
         )
       }
       {(demoUrl || repoUrl) && (

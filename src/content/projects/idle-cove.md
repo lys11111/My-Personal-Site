@@ -6,10 +6,13 @@ status: demo
 tags: ["H5", "Game", "Canvas"]
 featured: true
 cover: /images/projects/idle-cove-cover.webp
+coverVideo: /videos/projects/idle-cove-demo.mp4
 techStack: ["HTML5 Canvas", "JavaScript", "Vibe Coding"]
 platform: "android"
 listLayout: split
 ---
+
+> 页顶为可播放 Demo 录屏；列表与卡片仍使用封面静图。
 
 ## 项目简介
 

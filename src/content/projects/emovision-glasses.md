@@ -5,6 +5,7 @@ date: 2026-05-02
 status: "prototype"
 tags: ["AR", "Wearable", "Hackathon"]
 cover: "/images/projects/emovision-cover.webp"
+coverVideo: /videos/projects/emovision-glasses-demo.mp4
 featured: true
 techStack: ["Next.js", "Kotlin", "Rokid CXR-M", "face-api.js", "TensorFlow Lite"]
 platform: "android"
@@ -16,7 +17,7 @@ draft: false
 
 面向社交焦虑场景（恋爱 / 职场）的 **「闺中密友 · 情商助手」** —— 通过 AI 眼镜第一视角看见对方情绪，以 AR 叠加即时反馈，而不是单纯的相机或识别工具。
 
-> 页顶为赛期易拉宝海报完整截图。南京南客松 S2 **优秀作品**；Web 端 `/camera` 可无硬件体验 7 类情绪识别。
+> 页顶为可播放宣传 Demo 录屏；列表与卡片仍使用易拉宝封面静图。南京南客松 S2 **优秀作品**；Web 端 `/camera` 可无硬件体验 7 类情绪识别。
 
 ## 项目背景
 
