@@ -38,14 +38,16 @@ const isSplit = listLayout === 'split';
     isSplit ? (
       <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8 lg:gap-10">
         {cover && (
-          <a href={href} class="block shrink-0">
-            <div class="mx-auto max-w-[280px] overflow-hidden rounded-xl border border-[--color-border] bg-[--color-bg] p-4 transition-colors group-hover:border-[--color-accent]/40 sm:mx-0">
-              <img
-                src={cover}
-                alt={`${title} 原型预览`}
-                class="mx-auto max-h-[min(70vh,640px)] w-full object-contain"
-                loading="lazy"
-              />
+          <a href={href} class="block w-[280px] shrink-0 sm:mx-0">
+            <div class="overflow-hidden rounded-xl border border-[--color-border] bg-[--color-bg] p-4 transition-colors group-hover:border-[--color-accent]/40">
+              <div class="aspect-[9/16] w-full overflow-hidden">
+                <img
+                  src={cover}
+                  alt={`${title} 原型预览`}
+                  class="h-full w-full object-contain object-center"
+                  loading="lazy"
+                />
+              </div>
             </div>
           </a>
         )}
@@ -79,14 +81,16 @@ const isSplit = listLayout === 'split';
     ) : (
       <>
         {cover && (
-          <a href={href} class="block">
-            <div class="overflow-hidden rounded-xl border border-[--color-border] bg-[--color-bg] p-4 transition-colors group-hover:border-[--color-accent]/40">
-              <img
-                src={cover}
-                alt={`${title} 原型预览`}
-                class="mx-auto max-h-[min(80vh,900px)] w-full object-contain"
-                loading="lazy"
-              />
+          <a href={href} class="block w-full">
+            <div class="overflow-hidden rounded-xl border border-[--color-border] bg-[--color-bg] p-2 transition-colors group-hover:border-[--color-accent]/40">
+              <div class="aspect-[16/10] w-full overflow-hidden rounded-lg bg-[--color-surface]">
+                <img
+                  src={cover}
+                  alt={`${title} 原型预览`}
+                  class="h-full w-full object-cover object-top"
+                  loading="lazy"
+                />
+              </div>
             </div>
           </a>
         )}

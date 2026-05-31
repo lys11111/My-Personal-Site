@@ -1,5 +1,5 @@
 ---
-title: 摸鱼海湾 Idle Cove
+title: "Idle Cove · 摸鱼海湾"
 description: 单文件 HTML5 Canvas 竖屏钩钓小游戏——以「办公室摸鱼」为叙事的像素风休闲竞技复刻，离线可玩、本地存档。
 date: 2026-05-16
 status: demo
@@ -7,6 +7,7 @@ tags: ["H5", "Game", "Canvas"]
 featured: true
 cover: /images/projects/idle-cove-cover.webp
 techStack: ["HTML5 Canvas", "JavaScript", "Vibe Coding"]
+platform: "android"
 listLayout: split
 ---
 

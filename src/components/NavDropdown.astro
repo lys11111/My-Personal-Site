@@ -4,16 +4,24 @@ interface DropdownItem {
   title: string;
 }
 
+interface DropdownGroup {
+  label: string;
+  items: DropdownItem[];
+}
+
 interface Props {
   label: string;
   basePath: string;
   allLabel: string;
-  items: DropdownItem[];
+  items?: DropdownItem[];
+  groups?: DropdownGroup[];
   isActive: boolean;
   isIndexActive: boolean;
 }
 
-const { label, basePath, allLabel, items, isActive, isIndexActive } = Astro.props;
+const { label, basePath, allLabel, items = [], groups = [], isActive, isIndexActive } = Astro.props;
+const hasGroups = groups.length > 0;
+const hasItems = hasGroups ? groups.some((group) => group.items.length > 0) : items.length > 0;
 ---
 
 <li class="relative" data-nav-dropdown>
@@ -61,20 +69,45 @@ const { label, basePath, allLabel, items, isActive, isIndexActive } = Astro.prop
       </a>
     </li>
     {
-      items.length > 0 && (
+      hasItems && (
         <>
           <li class="my-1 border-t border-neutral-200" role="separator" />
-          {items.map((item) => (
-            <li role="none">
-              <a
-                href={`${basePath}#${item.id}`}
-                role="menuitem"
-                class="block whitespace-nowrap px-4 py-2.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
-              >
-                {item.title}
-              </a>
-            </li>
-          ))}
+          {
+            hasGroups ? (
+              groups.map((group) => (
+                <>
+                  <li role="none">
+                    <span class="block whitespace-nowrap px-4 py-2 text-xs font-medium tracking-wide text-neutral-500 uppercase">
+                      {group.label}
+                    </span>
+                  </li>
+                  {group.items.map((item) => (
+                    <li role="none">
+                      <a
+                        href={`${basePath}#${item.id}`}
+                        role="menuitem"
+                        class="block whitespace-nowrap px-4 py-2.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+                      >
+                        {item.title}
+                      </a>
+                    </li>
+                  ))}
+                </>
+              ))
+            ) : (
+              items.map((item) => (
+                <li role="none">
+                  <a
+                    href={`${basePath}#${item.id}`}
+                    role="menuitem"
+                    class="block whitespace-nowrap px-4 py-2.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+                  >
+                    {item.title}
+                  </a>
+                </li>
+              ))
+            )
+          }
         </>
       )
     }

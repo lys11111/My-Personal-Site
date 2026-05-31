@@ -1,0 +1,16 @@
+slug: liangxiangzhi
+viewport:
+  width: 390
+  height: 844
+startup:
+  type: static-serve
+  cwd: "../AI项目与简历整理/AI面相识别与卦算 两相知/liangxiangzhi-prototype-main"
+  port: 8765
+  readyUrl: "http://127.0.0.1:8765/prototype/index.html"
+steps:
+  - action: goto
+    url: "/prototype/index.html"
+  - action: wait
+    ms: 4000
+output:
+  video: liangxiangzhi-demo.mp4

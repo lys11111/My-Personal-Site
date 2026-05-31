@@ -8,6 +8,7 @@ cover: "/images/projects/aifit-cover.png"
 repoUrl: "https://github.com/lys11111/AI-Fit"
 featured: true
 techStack: ["React", "Vite", "Tailwind", "Radix UI", "MediaPipe"]
+platform: "android"
 listLayout: split
 draft: false
 ---

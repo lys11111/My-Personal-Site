@@ -17,3 +17,10 @@ export function formatDate(date: Date): string {
     day: 'numeric',
   });
 }
+
+export type ProjectPlatform = 'android' | 'web';
+
+/** 未填写 platform 时默认归入 Web 端 */
+export function getProjectPlatform(platform?: ProjectPlatform): ProjectPlatform {
+  return platform === 'android' ? 'android' : 'web';
+}

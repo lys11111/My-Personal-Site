@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { sortPublishedByDate } from '../lib/content';
+import { getGroupedProjects, toProjectNavItems } from '../lib/projects';
 import NavDropdown from './NavDropdown.astro';
 
 const navItems = [
@@ -9,6 +10,7 @@ const navItems = [
 ];
 
 const projects = sortPublishedByDate(await getCollection('projects'));
+const { android: androidProjects, web: webProjects } = getGroupedProjects(projects);
 const learning = sortPublishedByDate(await getCollection('learning'));
 const notes = sortPublishedByDate(await getCollection('notes'));
 
@@ -17,6 +19,11 @@ const hasHash = Boolean(Astro.url.hash);
 
 const toNavItems = (entries: { id: string; data: { title: string } }[]) =>
   entries.map((entry) => ({ id: entry.id, title: entry.data.title }));
+
+const projectNavGroups = [
+  { label: '安卓端', items: toProjectNavItems(androidProjects) },
+  { label: 'Web 端', items: toProjectNavItems(webProjects) },
+];
 ---
 
 <header class="sticky top-0 z-50 border-b border-[--color-border]/80 bg-[--color-bg]/90 backdrop-blur-md">
@@ -42,7 +49,7 @@ const toNavItems = (entries: { id: string; data: { title: string } }[]) =>
         label="项目"
         basePath="/projects"
         allLabel="全部项目"
-        items={toNavItems(projects)}
+        groups={projectNavGroups}
         isActive={currentPath.startsWith('/projects')}
         isIndexActive={currentPath === '/projects' && !hasHash}
       />

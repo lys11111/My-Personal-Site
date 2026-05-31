@@ -2,7 +2,7 @@
 
 > **用途**：在新 IDE、新电脑或其他设备上打开本项目时，快速了解「这是什么、改哪里、怎么跑、怎么发」。  
 > **维护者**：龙文广  
-> **最后更新**：2026-05-29
+> **最后更新**：2026-05-31
 
 ---
 
@@ -41,10 +41,13 @@ src/content/
 |------|------|
 | 首页 | `src/pages/index.astro` |
 | 关于 / 联系方式 | `src/pages/about.astro` |
-| 顶部导航 | `src/components/Navbar.astro` |
+| 顶部导航 / 下拉菜单 | `src/components/Navbar.astro` + `NavDropdown.astro` |
+| 列表页锚点滚动 | `src/components/HashScroll.astro`（projects / learning / notes 列表页已接入） |
 | 页脚 | `src/components/Footer.astro` |
 | 主题色 / 字体 | `src/styles/global.css` |
-| 项目卡片样式 | `src/components/ProjectCard.astro` |
+| 项目卡片 / 列表项 | `ProjectCard.astro`（首页）· `ProjectListItem.astro`（列表页） |
+| 状态徽章 | `Badge.astro` + `src/lib/badges.ts` |
+| 内容排序工具 | `src/lib/content.ts` → `sortPublishedByDate()` |
 | 内容 schema | `src/content.config.ts` |
 | 静态资源（favicon、简历 PDF） | `public/` |
 | 部署流水线 | `.github/workflows/deploy-cloudflare-pages.yml` |
@@ -98,7 +101,16 @@ personal-site/
 ├── src/content.config.ts       ★ 内容类型 schema（改 frontmatter 字段来这里）
 ├── src/pages/                  页面路由（改列表页、关于页等）
 ├── src/layouts/                页面外壳（导航、文章详情框架）
-├── src/components/             卡片、标签等 UI 组件
+├── src/components/             卡片、导航下拉、锚点滚动等 UI 组件
+│   ├── Navbar.astro            顶栏；自动读取 content 生成「项目/学习/随笔」下拉
+│   ├── NavDropdown.astro       下拉菜单（白底、宽度随标题自适应）
+│   ├── HashScroll.astro        列表页 `#slug` 锚点平滑滚动
+│   ├── ProjectCard.astro       首页精选项目卡片
+│   └── ProjectListItem.astro   项目列表页条目（支持 stack / split 布局）
+├── src/lib/
+│   ├── content.ts              isPublished、sortPublishedByDate、formatDate
+│   ├── projects.ts             项目列表 / 导航下拉共用分组与顺序（androidProjectIds 等）
+│   └── badges.ts               项目 status 等徽章文案与样式
 ├── src/styles/global.css       全局样式、主题色、prose 排版
 ├── public/                     静态文件（favicon、将来放 resume.pdf）
 ├── astro.config.mjs            Astro + Tailwind + MDX 配置
@@ -115,10 +127,12 @@ personal-site/
 | 写随笔 | `src/content/notes/新文件名.md` |
 | 改首页文案/布局 | `src/pages/index.astro` |
 | 改关于页、联系方式 | `src/pages/about.astro` |
-| 改顶部导航 | `src/components/Navbar.astro` |
-| 改页脚 | `src/components/Footer.astro` |
+| 改顶部导航 / 下拉 | `src/components/Navbar.astro`、`NavDropdown.astro` |
+| 改列表页锚点跳转 | 各列表页 `index.astro` 的 `id={slug}` + `HashScroll.astro` |
+| 改页脚文案 | `src/components/Footer.astro` |
 | 改主题色/字体 | `src/styles/global.css`（`@theme` 变量） |
-| 改项目卡片样式 | `src/components/ProjectCard.astro` |
+| 改项目列表页分组 / 排序 | `src/lib/projects.ts`（`androidProjectIds` / `webProjectIds`）+ `src/pages/projects/index.astro` |
+| 改项目卡片 / 列表样式 | `ProjectCard.astro`、`ProjectListItem.astro` |
 | 新增 frontmatter 字段 | `src/content.config.ts` + 对应 layout/页面 |
 | 改部署/Cloudflare | `.github/workflows/deploy-cloudflare-pages.yml` |
 
@@ -153,18 +167,43 @@ draft: false                # true：本地可见，上线不可见
 
 ```yaml
 ---
-title: "项目名"
+title: "English Name · 中文名"   # 先英文、后中文，中间用「 · 」分隔
 description: "一句话"
 date: 2026-05-29
 status: "prototype"         # demo | prototype | archived
 tags: ["Electron"]
 demoUrl: "https://..."      # 可选，有则显示「查看 Demo」
 repoUrl: "https://github.com/..."  # 可选，有则显示 GitHub 按钮
+cover: "/images/projects/xxx-cover.webp"  # 可选，首页卡片 + 列表页 + 详情头图
 featured: true                # true 出现在首页「精选项目」
 techStack: ["Electron", "Vite"]
+platform: "web"              # android | web — 项目列表页分组展示
+listLayout: "stack"          # stack=上图下文（Web/桌面）；split=左图右文（H5/竖屏原型）
 draft: false
 ---
 ```
+
+**项目标题命名**：`title` 统一为 **「英文名 · 中文名」**（先英文、后中文，中间英文间隔号 ` · `）。该标题会同步用于首页卡片、项目详情页、顶部导航下拉等所有展示位，请只在 frontmatter 里维护一处。
+
+**`platform` 分组**
+
+| 值 | 列表页分区 | 当前项目 |
+|----|------------|----------|
+| `"android"` | **安卓端**（左图右文 `split`） | EmoVision · 闺蜜眼镜、AIFIT · AI 健身 App、Tidegrain Bay · 穗潮湾、Idle Cove · 摸鱼海湾、Liangxiangzhi · 两相知 AI 文创关系签 |
+| `"web"` | **Web 端**（上图下文 `stack`） | Shiki · 桌宠 Agent、Auto Short Drama · 短剧创作工作台 |
+
+列表页 **不依赖** frontmatter 的 `listLayout` 字段，而是在 `src/lib/projects.ts` 的 slug 白名单 + `src/pages/projects/index.astro` 固定分组与顺序；导航下拉与列表页共用 `src/lib/projects.ts`。
+
+**`listLayout` 选用建议**（详情页等仍可读 frontmatter；列表页按分区强制覆盖）
+
+| 值 | 适用 | 当前项目示例 |
+|----|------|--------------|
+| `split` | 手机/H5 竖屏原型、穿戴 Demo | 安卓端全部 5 项 |
+| `stack` | 桌面/Web 宽屏、无竖屏封面 | Web 端 2 项 |
+
+**列表页 split 封面尺寸**：`ProjectListItem.astro` 统一为 **280px 宽 × 9:16 比例** 容器 + `object-contain`，避免易拉宝等超高图（如 EmoVision）撑破左栏。
+
+**列表页 stack 封面尺寸**：**16:10 宽屏框** + `object-cover object-top` + 外框 `p-2`，铺满内容区宽度，避免竖长截图在 Web 端列表里缩成「手机窄条」。
 
 **3. 随笔** `src/content/notes/*.md`
 
@@ -209,7 +248,7 @@ draft: false
 ```text
 public/
 ├── images/
-│   └── projects/    # 项目封面与截图（当前 3 个项目已入库）
+│   └── projects/    # 项目封面与截图（当前 7 个项目，见下文清单）
 ├── videos/          # mp4/webm（建议单文件 < 20MB）
 ├── files/           # 可下载 md/PDF 等
 └── resume.pdf       # 简历（about 页可链到 /resume.pdf）
@@ -223,7 +262,7 @@ public/
 
 ```markdown
 ---
-title: "Shiki 桌宠 Agent"
+title: "Shiki · 桌宠 Agent"
 demoUrl: "https://你的在线-demo.com"
 repoUrl: "https://github.com/..."
 ---
@@ -255,17 +294,76 @@ repoUrl: "https://github.com/..."
 
 ---
 
-## 当前已有内容（截至 2026-05-29）
+## 导航下拉与列表锚点（2026-05 新增）
 
-### 项目 `src/content/projects/`
+顶栏 **项目 / 学习 / 随笔** 为下拉菜单，条目来自 `getCollection()` + `sortPublishedByDate()`，**新增 Markdown 后会自动出现在下拉中**，无需手改导航配置。
 
-| slug | 标题 | 封面 / 媒体 |
-|------|------|-------------|
-| `shiki-desktop-pet` | Shiki 桌宠 Agent | `cover` + UI 截图；无公开 repo |
-| `aifit-mobile` | AIFIT · AI 健身 App | `cover` + 3 张截图；[GitHub](https://github.com/lys11111/AI-Fit) |
-| `liangxiangzhi` | 两相知 · AI 文创关系签 | `cover` + 截图；[GitHub](https://github.com/Valeera723/liangxiangzhi-prototype)；PRD/playbook 见 `/files/` |
+| 行为 | 说明 |
+|------|------|
+| 下拉项链接 | `/projects/#slug`、`/learning/#slug`、`/notes/#slug` |
+| 列表页锚点 | 每条内容外包 `<section id="{slug}" class="scroll-mt-24">` |
+| 平滑滚动 | 列表页引入 `HashScroll.astro`，进入带 hash 的 URL 时滚到对应条目 |
+| 样式 | 下拉白底不透明、`w-max` 宽度随标题单行展示 |
 
-静态资源目录：`public/images/projects/`、`public/files/`。重新生成截图可运行 `node scripts/capture-project-screenshots.mjs`（需 Playwright Chromium）。
+---
+
+## 项目列表页分组（2026-05 更新）
+
+`/projects` 分为 **安卓端**、**Web 端** 两个区块，分组与排序由 `src/lib/projects.ts` 内 slug 白名单决定（列表页与顶栏下拉共用）：
+
+```typescript
+// src/lib/projects.ts
+export const androidProjectIds = [
+  'emovision-glasses',
+  'aifit-mobile',
+  'tidegrain-bay',
+  'idle-cove',
+  'liangxiangzhi',
+] as const;
+
+export const webProjectIds = ['shiki-desktop-pet', 'auto-short-drama'] as const;
+```
+
+| 分区 | 排版 | 导航下拉 |
+|------|------|----------|
+| 安卓端 | 左图右文（`split`） | 280×9:16 左栏；下拉分组「安卓端」 |
+| Web 端 | 上图下文（`stack`） | 16:10 宽屏封面、`p-2` 窄留白；下拉分组「Web 端」 |
+
+新增项目时：在 Markdown 里写 `platform`，并把 slug 加入 `src/lib/projects.ts` 对应数组。
+
+---
+
+## 当前已有内容（截至 2026-05-31）
+
+### 项目 `src/content/projects/`（7 篇）
+
+**列表页展示顺序**（与下表 `platform` 一致）：
+
+| 分区 | 顺序 | slug | 标题 |
+|------|------|------|------|
+| 安卓端 | 1 | `emovision-glasses` | EmoVision · 闺蜜眼镜 |
+| 安卓端 | 2 | `aifit-mobile` | AIFIT · AI 健身 App |
+| 安卓端 | 3 | `tidegrain-bay` | Tidegrain Bay · 穗潮湾 |
+| 安卓端 | 4 | `idle-cove` | Idle Cove · 摸鱼海湾 |
+| 安卓端 | 5 | `liangxiangzhi` | Liangxiangzhi · 两相知 AI 文创关系签 |
+| Web 端 | 1 | `shiki-desktop-pet` | Shiki · 桌宠 Agent |
+| Web 端 | 2 | `auto-short-drama` | Auto Short Drama · 短剧创作工作台 |
+
+| slug | 标题 | platform | 列表排版 | 封面 / 链接 |
+|------|------|----------|----------|-------------|
+| `emovision-glasses` | EmoVision · 闺蜜眼镜 | android | split | `emovision-cover.webp`（易拉宝压缩 WebP；列表左栏 9:16 框内缩放） |
+| `aifit-mobile` | AIFIT · AI 健身 App | android | split | `aifit-cover.png`；[GitHub](https://github.com/lys11111/AI-Fit) |
+| `tidegrain-bay` | Tidegrain Bay · 穗潮湾 | android | split | `tidegrain-bay-cover.webp`；[GitHub](https://github.com/lys11111/Tidegrain_Bay) |
+| `idle-cove` | Idle Cove · 摸鱼海湾 | android | split | `idle-cove-cover.webp`；单文件 H5 本地 `index.html` |
+| `liangxiangzhi` | Liangxiangzhi · 两相知 AI 文创关系签 | android | split | `liangxiangzhi-cover.png`；[GitHub](https://github.com/Valeera723/liangxiangzhi-prototype) |
+| `shiki-desktop-pet` | Shiki · 桌宠 Agent | web | stack | `shiki-cover.png` + UI 截图 |
+| `auto-short-drama` | Auto Short Drama · 短剧创作工作台 | web | stack | 无封面 |
+
+静态资源：`public/images/projects/`、`public/files/`。
+
+- 批量截图（AIFIT / 两相知 / Shiki）：`node scripts/capture-project-screenshots.mjs`（需 Playwright）
+- 单页 H5 封面：可用 Playwright 打开本地 `index.html` 截图 → 压缩为 WebP 放入 `public/images/projects/`（单文件建议 < 500KB，部署上限约 25MB/文件）
+- 大图封面优先 **WebP**（如 EmoVision 原 PNG ~48MB 超限，已改为 ~372KB WebP）
 
 ### 学习 `src/content/learning/`
 
@@ -287,7 +385,7 @@ repoUrl: "https://github.com/..."
 | 路径 | 文件 | 说明 |
 |------|------|------|
 | `/` | `src/pages/index.astro` | 首页 |
-| `/about` | `src/pages/about.astro` | 关于（联系方式在此改） |
+| `/about` | `src/pages/about.astro` | 简介（联系方式在此改） |
 | `/projects` | `src/pages/projects/index.astro` | 项目列表 |
 | `/projects/[slug]` | `src/pages/projects/[...slug].astro` | 项目详情（自动生成） |
 | `/learning` | `src/pages/learning/index.astro` | 学习列表 |
@@ -368,9 +466,13 @@ git add . && git commit -m "content: 新增 xxx 项目说明" && git push
 | 网站项目 slug | 本地素材路径（工作区相对路径） |
 |---------------|-------------------------------|
 | shiki-desktop-pet | `../桌宠开发-shiki/` |
-| aifit-mobile | `../AI项目/AI健身/AI健身app/` |
-| liangxiangzhi | `../AI项目/AI面相识别与卦算 两相知/` |
-| 学习笔记素材 | `../AI项目/开为科技工作记录/`、`../AI项目/AI 游戏相关/` |
+| aifit-mobile | `../AI项目与简历整理/AI健身/AI健身app/` |
+| liangxiangzhi | `../AI项目与简历整理/AI面相识别与卦算 两相知/` |
+| emovision-glasses | `../AI项目与简历整理/南克松S2闺蜜眼镜项目/` |
+| auto-short-drama | `../AIGC工作流辅助/` |
+| idle-cove | `../AI项目与简历整理/AI 游戏相关/个人复刻摸金小游戏 摸鱼海湾/` |
+| tidegrain-bay | `../AI项目与简历整理/AI 游戏相关/AI+抖音游戏  穗潮湾/` |
+| 学习笔记素材 | `../AI项目与简历整理/`、`../AI 游戏相关/` 等 |
 
 简历相关文件在 `../AI项目/00-简历与求职/`（与本站分离，不自动同步）。
 
@@ -384,6 +486,7 @@ git add . && git commit -m "content: 新增 xxx 项目说明" && git push
 | `README.md` | 精简版使用说明 |
 | `DEPLOY.md` | Cloudflare / Secrets / 部署故障排查 |
 | `docs/建站与部署全记录.md` | 从零建站与部署的完整过程、原理、踩坑 |
+| `docs/原型demo自动化.md` | Web/H5 原型录屏工具（`prototype-demo-toolkit/`，不随 Pages 部署） |
 
 ---
 
@@ -391,12 +494,13 @@ git add . && git commit -m "content: 新增 xxx 项目说明" && git push
 
 若在本项目中继续开发，请优先：
 
-1. **内容变更** → 只改 `src/content/**/*.md`，保持 frontmatter 与 `src/content.config.ts` 一致  
-2. **UI 小改** → 改对应 `.astro` 组件，风格跟随 `global.css` 现有 token  
-3. **不要**引入数据库、CMS、或 Next.js 式 API 路由，除非明确要求  
-4. **不要**改 Cloudflare 项目名或 GitHub Secrets 名称，除非同步改 workflow + wrangler  
-5. 改完运行 `npm run build` 确认通过再 push  
-6. 部署细节见 `DEPLOY.md`，历史背景见 `docs/建站与部署全记录.md`
+1. **内容变更** → 只改 `src/content/**/*.md`，保持 frontmatter 与 `src/content.config.ts` 一致；新项目会自动进导航下拉  
+2. **H5/竖屏项目** → `listLayout: split` + `cover` 指向 `public/images/projects/`  
+3. **UI 小改** → 改对应 `.astro` 组件，风格跟随 `global.css` 现有 token；导航下拉改 `Navbar.astro` / `NavDropdown.astro`  
+4. **不要**引入数据库、CMS、或 Next.js 式 API 路由，除非明确要求  
+5. **不要**改 Cloudflare 项目名或 GitHub Secrets 名称，除非同步改 workflow + wrangler  
+6. 改完运行 `npm run build` 确认通过再 push（`main` → Actions 自动部署 Cloudflare）  
+7. 部署细节见 `DEPLOY.md`，历史背景见 `docs/建站与部署全记录.md`
 
 ---
 

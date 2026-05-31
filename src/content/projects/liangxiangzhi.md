@@ -1,5 +1,5 @@
 ---
-title: "两相知 · AI 文创关系签"
+title: "Liangxiangzhi · 两相知 AI 文创关系签"
 description: "古籍仪式感 × 本地面相取象 × 关系合参，面向抖音挂载场景的 H5 可演示原型"
 date: 2025-08-20
 status: "demo"
@@ -8,6 +8,7 @@ cover: "/images/projects/liangxiangzhi-cover.png"
 repoUrl: "https://github.com/Valeera723/liangxiangzhi-prototype"
 featured: true
 techStack: ["H5", "Canvas", "DeepSeek", "Face Mesh"]
+platform: "android"
 listLayout: split
 draft: false
 ---

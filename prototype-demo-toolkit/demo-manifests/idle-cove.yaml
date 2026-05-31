@@ -1,0 +1,24 @@
+slug: idle-cove
+viewport:
+  width: 390
+  height: 844
+startup:
+  type: static-serve
+  cwd: "../AI项目与简历整理/AI 游戏相关/个人复刻摸金小游戏 摸鱼海湾"
+  port: 8770
+  readyUrl: "http://127.0.0.1:8770/index.html"
+steps:
+  - action: goto
+    url: "/index.html"
+  - action: wait
+    ms: 2000
+  - action: click
+    selector: "canvas"
+  - action: wait
+    ms: 1500
+  - action: press
+    key: Space
+  - action: wait
+    ms: 4000
+output:
+  video: idle-cove-demo.mp4

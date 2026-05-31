@@ -7,6 +7,7 @@ tags: ["AR", "Wearable", "Hackathon"]
 cover: "/images/projects/emovision-cover.webp"
 featured: true
 techStack: ["Next.js", "Kotlin", "Rokid CXR-M", "face-api.js", "TensorFlow Lite"]
+platform: "android"
 listLayout: split
 draft: false
 ---

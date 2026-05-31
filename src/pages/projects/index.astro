@@ -4,8 +4,10 @@ import ProjectListItem from '../../components/ProjectListItem.astro';
 import HashScroll from '../../components/HashScroll.astro';
 import { getCollection } from 'astro:content';
 import { sortPublishedByDate } from '../../lib/content';
+import { getGroupedProjects } from '../../lib/projects';
 
 const projects = sortPublishedByDate(await getCollection('projects'));
+const { android: androidProjects, web: webProjects } = getGroupedProjects(projects);
 ---
 
 <PageLayout title="项目" description="Vibe Coding 项目展示">
@@ -15,26 +17,54 @@ const projects = sortPublishedByDate(await getCollection('projects'));
       这里包含项目原型、Demo 与 Git 仓库。每个项目是独立探索或实习/赛事合作产出。
     </p>
   </header>
-  <div class="flex flex-col gap-16">
-    {
-      projects.map((project) => (
-        <section id={project.id} class="scroll-mt-24">
-          <ProjectListItem
-            title={project.data.title}
-            description={project.data.description}
-            date={project.data.date}
-            href={`/projects/${project.id}`}
-            status={project.data.status}
-            cover={project.data.cover}
-            listLayout={project.data.listLayout}
-            tags={project.data.tags}
-            techStack={project.data.techStack}
-            featured={project.data.featured}
-          />
-        </section>
-      ))
-    }
-  </div>
+
+  <section class="mb-16 scroll-mt-24">
+    <h2 class="mb-8 font-serif text-2xl font-medium">安卓端</h2>
+    <div class="flex flex-col gap-16">
+      {
+        androidProjects.map((project) => (
+          <section id={project.id} class="scroll-mt-24">
+            <ProjectListItem
+              title={project.data.title}
+              description={project.data.description}
+              date={project.data.date}
+              href={`/projects/${project.id}`}
+              status={project.data.status}
+              cover={project.data.cover}
+              listLayout="split"
+              tags={project.data.tags}
+              techStack={project.data.techStack}
+              featured={project.data.featured}
+            />
+          </section>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mb-16 scroll-mt-24">
+    <h2 class="mb-8 font-serif text-2xl font-medium">Web 端</h2>
+    <div class="flex flex-col gap-16">
+      {
+        webProjects.map((project) => (
+          <section id={project.id} class="scroll-mt-24">
+            <ProjectListItem
+              title={project.data.title}
+              description={project.data.description}
+              date={project.data.date}
+              href={`/projects/${project.id}`}
+              status={project.data.status}
+              cover={project.data.cover}
+              listLayout="stack"
+              tags={project.data.tags}
+              techStack={project.data.techStack}
+              featured={project.data.featured}
+            />
+          </section>
+        ))
+      }
+    </div>
+  </section>
 </PageLayout>
 
 <HashScroll />

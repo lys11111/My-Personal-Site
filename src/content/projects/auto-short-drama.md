@@ -6,6 +6,7 @@ status: "prototype"
 tags: ["AIGC", "Workflow", "LLM"]
 featured: true
 techStack: ["FastAPI", "React", "TypeScript", "Vite", "LLM"]
+platform: "web"
 listLayout: stack
 draft: false
 ---

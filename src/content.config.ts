@@ -28,6 +28,8 @@ const projects = defineCollection({
     cover: z.string().optional(),
     featured: z.boolean().default(false),
     techStack: z.array(z.string()).default([]),
+    /** android = 安卓端；web = Web 端（含 H5、桌面 Web、Electron 等） */
+    platform: z.enum(['android', 'web']).default('web'),
     /** stack = 上图下文（Web/桌面宽屏）；split = 左图右文（移动/H5 竖屏原型） */
     listLayout: z.enum(['stack', 'split']).default('stack'),
     draft: z.boolean().default(false),

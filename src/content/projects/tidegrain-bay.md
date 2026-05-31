@@ -1,5 +1,5 @@
 ---
-title: 穗潮湾 Tidegrain Bay
+title: "Tidegrain Bay · 穗潮湾"
 description: 面向抖音/H5 的陀螺仪 3DoF 全景轻经营原型——四场景一日回环（鸡舍·码头·果园·集市），定点观察 + 微操作 + 资源闭环。
 date: 2026-05-17
 status: prototype
@@ -8,6 +8,7 @@ featured: true
 cover: /images/projects/tidegrain-bay-cover.webp
 repoUrl: https://github.com/lys11111/Tidegrain_Bay
 techStack: ["HTML5", "Three.js", "DeviceOrientation", "Vibe Coding"]
+platform: "android"
 listLayout: split
 ---
 

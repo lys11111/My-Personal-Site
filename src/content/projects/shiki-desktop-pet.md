@@ -1,5 +1,5 @@
 ---
-title: "Shiki 桌宠 Agent"
+title: "Shiki · 桌宠 Agent"
 description: "Windows 桌面宠物 + LLM 对话，支持角色包生成与 Atlas 动画渲染"
 date: 2025-12-01
 status: "prototype"
@@ -7,6 +7,7 @@ tags: ["Electron", "AI Agent", "Desktop"]
 cover: "/images/projects/shiki-cover.png"
 featured: true
 techStack: ["Electron", "Vite", "React", "Python", "FastAPI"]
+platform: "web"
 listLayout: stack
 draft: false
 ---

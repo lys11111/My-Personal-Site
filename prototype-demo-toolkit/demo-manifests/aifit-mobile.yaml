@@ -1,0 +1,33 @@
+slug: aifit-mobile
+viewport:
+  width: 390
+  height: 844
+startup:
+  type: npm-dev
+  cwd: "../AI项目与简历整理/AI健身/AI健身app/aifit-mobile-app"
+  command: npm
+  args:
+    - run
+    - dev
+    - --
+    - --host
+    - "127.0.0.1"
+    - --port
+    - "5180"
+    - --strictPort
+  readyUrl: "http://127.0.0.1:5180/"
+steps:
+  - action: goto
+    url: "/"
+  - action: wait
+    ms: 2500
+  - action: goto
+    url: "/app/home"
+  - action: wait
+    ms: 2500
+  - action: goto
+    url: "/app/training"
+  - action: wait
+    ms: 3000
+output:
+  video: aifit-mobile-demo.mp4
