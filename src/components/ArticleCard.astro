@@ -1,5 +1,6 @@
 ---
 import { formatDate } from '../lib/content';
+import Badge from './Badge.astro';
 import TagList from './TagList.astro';
 
 interface Props {
@@ -19,10 +20,12 @@ const { title, description, date, href, tags = [], category, featured = false } 
   href={href}
   class="group flex h-full flex-col rounded-xl border border-[--color-border] bg-[--color-surface] p-5 transition-all hover:border-[--color-accent]/40 hover:bg-[--color-surface-hover]"
 >
-  <div class="mb-3 flex items-center justify-between gap-2 text-xs text-[--color-muted]">
+  <div class="meta-row">
     <time datetime={date.toISOString()}>{formatDate(date)}</time>
-    {category && <span>{category}</span>}
-    {featured && <span class="text-[--color-accent]">精选</span>}
+    <div class="meta-badges">
+      {category && <Badge variant="outline">{category}</Badge>}
+      {featured && <Badge variant="featured">精选</Badge>}
+    </div>
   </div>
   <h3 class="font-serif text-lg font-medium text-[--color-text] group-hover:text-[--color-accent]">
     {title}

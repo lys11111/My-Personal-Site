@@ -1,0 +1,11 @@
+<script>
+  function scrollToHash(behavior: ScrollBehavior = 'smooth') {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const target = document.getElementById(hash);
+    if (target) target.scrollIntoView({ behavior, block: 'start' });
+  }
+
+  scrollToHash('auto');
+  window.addEventListener('hashchange', () => scrollToHash('smooth'));
+</script>

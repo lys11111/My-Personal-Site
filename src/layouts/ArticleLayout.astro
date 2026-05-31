@@ -1,6 +1,8 @@
 ---
 import PageLayout from './PageLayout.astro';
+import Badge from '../components/Badge.astro';
 import TagList from '../components/TagList.astro';
+import { projectStatusLabels } from '../lib/badges';
 import { formatDate } from '../lib/content';
 
 interface Props {
@@ -33,23 +35,26 @@ const {
 <PageLayout title={title} description={description}>
   <article>
     <header class="mb-10 border-b border-[--color-border] pb-8">
-      <div class="mb-3 flex flex-wrap items-center gap-3 text-sm text-[--color-muted]">
+      <div class="meta-row text-sm">
         <time datetime={date.toISOString()}>{formatDate(date)}</time>
-        {category && (
-          <span class="rounded-full border border-[--color-border] px-2.5 py-0.5">{category}</span>
-        )}
-        {status && (
-          <span class="rounded-full bg-[--color-accent]/15 px-2.5 py-0.5 text-[--color-accent]">
-            {status}
-          </span>
-        )}
+        <div class="meta-badges">
+          {category && <Badge variant="outline">{category}</Badge>}
+          {status && (
+            <Badge variant="status">{projectStatusLabels[status] ?? status}</Badge>
+          )}
+        </div>
       </div>
       <h1 class="font-serif text-4xl font-semibold tracking-tight text-[--color-text]">{title}</h1>
       <p class="mt-4 max-w-2xl text-lg text-[--color-muted]">{description}</p>
       {
         cover && (
-          <div class="mt-6 aspect-video max-w-[720px] overflow-hidden rounded-xl border border-[--color-border]">
-            <img src={cover} alt="" class="h-full w-full object-cover" loading="eager" />
+          <div class="not-prose mt-8 w-full overflow-hidden rounded-xl border border-[--color-border] bg-[--color-bg] p-4">
+            <img
+              src={cover}
+              alt={`${title} 原型预览`}
+              class="mx-auto max-h-[min(85vh,960px)] w-full object-contain"
+              loading="eager"
+            />
           </div>
         )
       }

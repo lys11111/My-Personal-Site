@@ -1,0 +1,82 @@
+---
+interface DropdownItem {
+  id: string;
+  title: string;
+}
+
+interface Props {
+  label: string;
+  basePath: string;
+  allLabel: string;
+  items: DropdownItem[];
+  isActive: boolean;
+  isIndexActive: boolean;
+}
+
+const { label, basePath, allLabel, items, isActive, isIndexActive } = Astro.props;
+---
+
+<li class="relative" data-nav-dropdown>
+  <button
+    type="button"
+    class:list={[
+      'inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm transition-colors',
+      isActive ? 'text-[--color-accent]' : 'text-[--color-muted] hover:text-[--color-text]',
+    ]}
+    aria-expanded="false"
+    aria-haspopup="true"
+    data-nav-dropdown-trigger
+  >
+    {label}
+    <svg
+      class="h-3.5 w-3.5 opacity-70 transition-transform duration-200"
+      data-nav-dropdown-chevron
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.24 4.5a.75.75 0 01-1.08 0l-4.24-4.5a.75.75 0 01.02-1.06z"
+        clip-rule="evenodd"></path>
+    </svg>
+  </button>
+  <ul
+    class="invisible pointer-events-none absolute right-0 top-full z-50 mt-2 w-max max-w-[90vw] translate-y-1 rounded-lg border border-neutral-200 bg-white py-1 shadow-xl transition-[visibility,transform] duration-200"
+    data-nav-dropdown-menu
+    role="menu"
+  >
+    <li role="none">
+      <a
+        href={basePath}
+        role="menuitem"
+        class:list={[
+          'block whitespace-nowrap px-4 py-2.5 text-sm transition-colors',
+          isIndexActive
+            ? 'text-[--color-accent]'
+            : 'text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900',
+        ]}
+      >
+        {allLabel}
+      </a>
+    </li>
+    {
+      items.length > 0 && (
+        <>
+          <li class="my-1 border-t border-neutral-200" role="separator" />
+          {items.map((item) => (
+            <li role="none">
+              <a
+                href={`${basePath}#${item.id}`}
+                role="menuitem"
+                class="block whitespace-nowrap px-4 py-2.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+              >
+                {item.title}
+              </a>
+            </li>
+          ))}
+        </>
+      )
+    }
+  </ul>
+</li>

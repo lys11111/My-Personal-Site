@@ -1,36 +1,40 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
+import ProjectListItem from '../../components/ProjectListItem.astro';
+import HashScroll from '../../components/HashScroll.astro';
 import { getCollection } from 'astro:content';
-import { isPublished } from '../../lib/content';
+import { sortPublishedByDate } from '../../lib/content';
 
-const projects = (await getCollection('projects'))
-  .filter((p) => isPublished(p.data.draft))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const projects = sortPublishedByDate(await getCollection('projects'));
 ---
 
 <PageLayout title="项目" description="Vibe Coding 项目展示">
   <header class="mb-10">
     <h1 class="font-serif text-4xl font-semibold">项目</h1>
-    <p class="mt-3 max-w-xl text-[--color-muted]">
-      Demo、原型与 Git 仓库。每个项目都是独立探索或实习/赛事产出。
+    <p class="mt-3 w-full whitespace-nowrap text-[--color-muted]">
+      这里包含项目原型、Demo 与 Git 仓库。每个项目是独立探索或实习/赛事合作产出。
     </p>
   </header>
-  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <div class="flex flex-col gap-16">
     {
       projects.map((project) => (
-        <ProjectCard
-          title={project.data.title}
-          description={project.data.description}
-          date={project.data.date}
-          href={`/projects/${project.id}`}
-          status={project.data.status}
-          cover={project.data.cover}
-          tags={project.data.tags}
-          techStack={project.data.techStack}
-          featured={project.data.featured}
-        />
+        <section id={project.id} class="scroll-mt-24">
+          <ProjectListItem
+            title={project.data.title}
+            description={project.data.description}
+            date={project.data.date}
+            href={`/projects/${project.id}`}
+            status={project.data.status}
+            cover={project.data.cover}
+            listLayout={project.data.listLayout}
+            tags={project.data.tags}
+            techStack={project.data.techStack}
+            featured={project.data.featured}
+          />
+        </section>
       ))
     }
   </div>
 </PageLayout>
+
+<HashScroll />

@@ -7,17 +7,10 @@ interface Props {
 const { tags, muted = false } = Astro.props;
 ---
 
-<div class="flex flex-wrap gap-2">
+<div class="flex flex-wrap items-center gap-2">
   {
     tags.map((tag) => (
-      <span
-        class:list={[
-          'rounded-full px-2.5 py-0.5 text-xs',
-          muted
-            ? 'border border-[--color-border] text-[--color-muted]'
-            : 'bg-[--color-surface] text-[--color-accent]',
-        ]}
-      >
+      <span class:list={['badge', muted ? 'border border-[--color-border] text-[--color-muted] bg-transparent' : 'border border-transparent bg-[--color-surface] text-[--color-accent]']}>
         {tag}
       </span>
     ))

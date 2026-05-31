@@ -1,0 +1,122 @@
+---
+import { formatDate } from '../lib/content';
+import { projectStatusLabels } from '../lib/badges';
+import Badge from './Badge.astro';
+import TagList from './TagList.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  href: string;
+  status: string;
+  cover?: string;
+  listLayout?: 'stack' | 'split';
+  tags?: string[];
+  techStack?: string[];
+  featured?: boolean;
+}
+
+const {
+  title,
+  description,
+  date,
+  href,
+  status,
+  cover,
+  listLayout = 'stack',
+  tags = [],
+  techStack = [],
+  featured = false,
+} = Astro.props;
+
+const isSplit = listLayout === 'split';
+---
+
+<article class="group">
+  {
+    isSplit ? (
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8 lg:gap-10">
+        {cover && (
+          <a href={href} class="block shrink-0">
+            <div class="mx-auto max-w-[280px] overflow-hidden rounded-xl border border-[--color-border] bg-[--color-bg] p-4 transition-colors group-hover:border-[--color-accent]/40 sm:mx-0">
+              <img
+                src={cover}
+                alt={`${title} 原型预览`}
+                class="mx-auto max-h-[min(70vh,640px)] w-full object-contain"
+                loading="lazy"
+              />
+            </div>
+          </a>
+        )}
+        <div class="min-w-0 flex-1">
+          <div class="meta-row text-sm">
+            <time datetime={date.toISOString()}>{formatDate(date)}</time>
+            <div class="meta-badges">
+              {featured && <Badge variant="featured">精选</Badge>}
+              <Badge variant="status">{projectStatusLabels[status] ?? status}</Badge>
+            </div>
+          </div>
+          <a href={href} class="block">
+            <h2 class="font-serif text-2xl font-medium text-[--color-text] transition-colors group-hover:text-[--color-accent] sm:text-3xl">
+              {title}
+            </h2>
+            <p class="mt-3 text-[--color-muted]">{description}</p>
+          </a>
+          {(techStack.length > 0 || tags.length > 0) && (
+            <div class="mt-4">
+              <TagList tags={techStack.length > 0 ? techStack : tags} muted />
+            </div>
+          )}
+          <a
+            href={href}
+            class="mt-4 inline-block text-sm text-[--color-muted] transition-colors hover:text-[--color-accent]"
+          >
+            查看项目详情 →
+          </a>
+        </div>
+      </div>
+    ) : (
+      <>
+        {cover && (
+          <a href={href} class="block">
+            <div class="overflow-hidden rounded-xl border border-[--color-border] bg-[--color-bg] p-4 transition-colors group-hover:border-[--color-accent]/40">
+              <img
+                src={cover}
+                alt={`${title} 原型预览`}
+                class="mx-auto max-h-[min(80vh,900px)] w-full object-contain"
+                loading="lazy"
+              />
+            </div>
+          </a>
+        )}
+        <div class="mt-5">
+          <div class="meta-row text-sm">
+            <time datetime={date.toISOString()}>{formatDate(date)}</time>
+            <div class="meta-badges">
+              {featured && <Badge variant="featured">精选</Badge>}
+              <Badge variant="status">{projectStatusLabels[status] ?? status}</Badge>
+            </div>
+          </div>
+          <a href={href} class="block">
+            <h2 class="font-serif text-2xl font-medium text-[--color-text] transition-colors group-hover:text-[--color-accent] sm:text-3xl">
+              {title}
+            </h2>
+            <p class="mt-3 max-w-3xl text-[--color-muted]">{description}</p>
+          </a>
+          {(techStack.length > 0 || tags.length > 0) && (
+            <div class="mt-4">
+              <TagList tags={techStack.length > 0 ? techStack : tags} muted />
+            </div>
+          )}
+          <a
+            href={href}
+            class="mt-4 inline-block text-sm text-[--color-muted] transition-colors hover:text-[--color-accent]"
+          >
+            查看项目详情 →
+          </a>
+        </div>
+      </>
+    )
+  }
+</article>

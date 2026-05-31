@@ -30,6 +30,19 @@
     @apply transition-colors duration-200;
   }
 
+  /* 徽章 / 元信息行：统一高度与基线对齐 */
+  .badge {
+    @apply inline-flex shrink-0 items-center justify-center rounded-full px-2.5 py-1 text-xs font-normal leading-none;
+  }
+
+  .meta-row {
+    @apply mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 text-xs text-[--color-muted];
+  }
+
+  .meta-badges {
+    @apply flex flex-wrap items-center gap-2;
+  }
+
   .prose-content {
     @apply max-w-[720px] leading-relaxed text-[--color-text];
   }
@@ -91,5 +104,13 @@
 
   .prose-content iframe {
     @apply my-6 aspect-video w-full rounded-lg border border-[--color-border];
+  }
+
+  .prototype-frame {
+    @apply overflow-hidden rounded-xl border border-[--color-border] bg-[--color-bg] p-4;
+  }
+
+  .prototype-frame img {
+    @apply mx-auto max-h-[min(80vh,900px)] w-full object-contain;
   }
 }

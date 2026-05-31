@@ -1,13 +1,22 @@
 ---
+import { getCollection } from 'astro:content';
+import { sortPublishedByDate } from '../lib/content';
+import NavDropdown from './NavDropdown.astro';
+
 const navItems = [
   { href: '/', label: '首页' },
-  { href: '/projects', label: '项目' },
-  { href: '/learning', label: '学习' },
-  { href: '/notes', label: '随笔' },
   { href: '/about', label: '关于' },
 ];
 
+const projects = sortPublishedByDate(await getCollection('projects'));
+const learning = sortPublishedByDate(await getCollection('learning'));
+const notes = sortPublishedByDate(await getCollection('notes'));
+
 const currentPath = Astro.url.pathname;
+const hasHash = Boolean(Astro.url.hash);
+
+const toNavItems = (entries: { id: string; data: { title: string } }[]) =>
+  entries.map((entry) => ({ id: entry.id, title: entry.data.title }));
 ---
 
 <header class="sticky top-0 z-50 border-b border-[--color-border]/80 bg-[--color-bg]/90 backdrop-blur-md">
@@ -16,29 +25,115 @@ const currentPath = Astro.url.pathname;
       龙文广
     </a>
     <ul class="flex items-center gap-1 sm:gap-2">
+      <li>
+        <a
+          href="/"
+          class:list={[
+            'rounded-md px-3 py-2 text-sm transition-colors',
+            currentPath === '/'
+              ? 'text-[--color-accent]'
+              : 'text-[--color-muted] hover:text-[--color-text]',
+          ]}
+        >
+          首页
+        </a>
+      </li>
+      <NavDropdown
+        label="项目"
+        basePath="/projects"
+        allLabel="全部项目"
+        items={toNavItems(projects)}
+        isActive={currentPath.startsWith('/projects')}
+        isIndexActive={currentPath === '/projects' && !hasHash}
+      />
+      <NavDropdown
+        label="学习"
+        basePath="/learning"
+        allLabel="全部学习"
+        items={toNavItems(learning)}
+        isActive={currentPath.startsWith('/learning')}
+        isIndexActive={currentPath === '/learning' && !hasHash}
+      />
+      <NavDropdown
+        label="随笔"
+        basePath="/notes"
+        allLabel="全部随笔"
+        items={toNavItems(notes)}
+        isActive={currentPath.startsWith('/notes')}
+        isIndexActive={currentPath === '/notes' && !hasHash}
+      />
       {
-        navItems.map((item) => {
-          const isActive =
-            item.href === '/'
-              ? currentPath === '/'
-              : currentPath.startsWith(item.href);
-          return (
-            <li>
-              <a
-                href={item.href}
-                class:list={[
-                  'rounded-md px-3 py-2 text-sm transition-colors',
-                  isActive
-                    ? 'text-[--color-accent]'
-                    : 'text-[--color-muted] hover:text-[--color-text]',
-                ]}
-              >
-                {item.label}
-              </a>
-            </li>
-          );
-        })
+        navItems.slice(1).map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                'rounded-md px-3 py-2 text-sm transition-colors',
+                currentPath.startsWith(item.href)
+                  ? 'text-[--color-accent]'
+                  : 'text-[--color-muted] hover:text-[--color-text]',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
       }
     </ul>
   </nav>
 </header>
+
+<script>
+  document.querySelectorAll('[data-nav-dropdown]').forEach((dropdown) => {
+    const trigger = dropdown.querySelector('[data-nav-dropdown-trigger]');
+    const menu = dropdown.querySelector('[data-nav-dropdown-menu]');
+    const chevron = dropdown.querySelector('[data-nav-dropdown-chevron]');
+    if (!(trigger instanceof HTMLButtonElement) || !(menu instanceof HTMLElement)) return;
+
+    const close = () => {
+      trigger.setAttribute('aria-expanded', 'false');
+      menu.classList.add('invisible', 'translate-y-1', 'pointer-events-none');
+      menu.classList.remove('visible', 'translate-y-0', 'pointer-events-auto');
+      chevron?.classList.remove('rotate-180');
+    };
+
+    const open = () => {
+      document.querySelectorAll('[data-nav-dropdown]').forEach((other) => {
+        if (other === dropdown) return;
+        const otherTrigger = other.querySelector('[data-nav-dropdown-trigger]');
+        const otherMenu = other.querySelector('[data-nav-dropdown-menu]');
+        const otherChevron = other.querySelector('[data-nav-dropdown-chevron]');
+        if (otherTrigger instanceof HTMLButtonElement) {
+          otherTrigger.setAttribute('aria-expanded', 'false');
+        }
+        otherMenu?.classList.add('invisible', 'translate-y-1', 'pointer-events-none');
+        otherMenu?.classList.remove('visible', 'translate-y-0', 'pointer-events-auto');
+        otherChevron?.classList.remove('rotate-180');
+      });
+
+      trigger.setAttribute('aria-expanded', 'true');
+      menu.classList.remove('invisible', 'translate-y-1', 'pointer-events-none');
+      menu.classList.add('visible', 'translate-y-0', 'pointer-events-auto');
+      chevron?.classList.add('rotate-180');
+    };
+
+    trigger.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+      if (isOpen) close();
+      else open();
+    });
+
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => close());
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!dropdown.contains(event.target as Node)) close();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') close();
+    });
+  });
+</script>

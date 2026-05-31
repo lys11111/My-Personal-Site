@@ -28,11 +28,10 @@ const allTags = [
   <section class="mb-16">
     <p class="mb-4 text-sm tracking-widest text-[--color-accent] uppercase">Portfolio & Learning</p>
     <h1 class="max-w-3xl font-serif text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-      把学习与构建的过程<br />
-      <span class="text-[--color-muted]">留在可分享的地方</span>
+      分享我的学习与构建～
     </h1>
-    <p class="mt-6 max-w-xl text-lg text-[--color-muted]">
-      AI 产品经理方向。这里记录跨学科学习笔记、Vibe Coding 项目原型，以及简历放不下的细节。
+    <p class="mt-6 w-full whitespace-nowrap text-lg leading-relaxed text-[--color-muted]">
+      记录关于 Vibe Coding 项目原型、学习笔记以及其他简历放不下的细节。
     </p>
     <div class="mt-8 flex flex-wrap gap-4">
       <a
@@ -64,7 +63,7 @@ const allTags = [
             date={project.data.date}
             href={`/projects/${project.id}`}
             status={project.data.status}
-            cover={project.data.cover}
+            showCover={false}
             tags={project.data.tags}
             techStack={project.data.techStack}
             featured={project.data.featured}
@@ -98,10 +97,10 @@ const allTags = [
     </div>
     <div class="rounded-xl border border-[--color-border] bg-[--color-surface] p-6">
       <h2 class="mb-4 font-serif text-lg font-medium">探索标签</h2>
-      <div class="flex flex-wrap gap-2">
+      <div class="flex flex-wrap items-center gap-2">
         {
           allTags.map((tag) => (
-            <span class="rounded-full border border-[--color-border] px-3 py-1 text-xs text-[--color-muted]">
+            <span class="badge border border-[--color-border] text-[--color-muted] bg-transparent">
               {tag}
             </span>
           ))

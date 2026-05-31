@@ -8,6 +8,7 @@ cover: "/images/projects/aifit-cover.png"
 repoUrl: "https://github.com/lys11111/AI-Fit"
 featured: true
 techStack: ["React", "Vite", "Tailwind", "Radix UI", "MediaPipe"]
+listLayout: split
 draft: false
 ---
 
@@ -15,13 +16,13 @@ draft: false
 
 AIFIT 是一款 AI 健身移动 App 原型，聚焦「动作识别 + 训练反馈」的体验闭环。前端采用 React + Tailwind 构建移动端 UI，姿态检测实验基于 MediaPipe。
 
-## 预览
+## 更多界面
 
 ![欢迎页](/images/projects/aifit-screenshot-welcome.png)
 
-![首页](/images/projects/aifit-cover.png)
-
 ![训练页](/images/projects/aifit-screenshot-training.png)
+
+> 页顶封面为 App 首页；此处为欢迎流程与训练页补充截图。
 
 ## 产品亮点
 

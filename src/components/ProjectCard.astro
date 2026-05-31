@@ -1,5 +1,7 @@
 ---
 import { formatDate } from '../lib/content';
+import { projectStatusLabels } from '../lib/badges';
+import Badge from './Badge.astro';
 import TagList from './TagList.astro';
 
 interface Props {
@@ -9,16 +11,11 @@ interface Props {
   href: string;
   status: string;
   cover?: string;
+  showCover?: boolean;
   tags?: string[];
   techStack?: string[];
   featured?: boolean;
 }
-
-const statusLabels: Record<string, string> = {
-  demo: 'Demo',
-  prototype: '原型',
-  archived: '归档',
-};
 
 const {
   title,
@@ -27,10 +24,13 @@ const {
   href,
   status,
   cover,
+  showCover = true,
   tags = [],
   techStack = [],
   featured = false,
 } = Astro.props;
+
+const displayCover = showCover && cover;
 ---
 
 <a
@@ -38,7 +38,7 @@ const {
   class="group flex h-full flex-col overflow-hidden rounded-xl border border-[--color-border] bg-[--color-surface] transition-all hover:border-[--color-accent]/40 hover:bg-[--color-surface-hover]"
 >
   {
-    cover && (
+    displayCover && (
       <div class="aspect-video overflow-hidden border-b border-[--color-border]">
         <img
           src={cover}
@@ -50,23 +50,21 @@ const {
     )
   }
   <div class="flex flex-1 flex-col p-5">
-  <div class="mb-3 flex items-center justify-between gap-2 text-xs">
-    <time class="text-[--color-muted]" datetime={date.toISOString()}>{formatDate(date)}</time>
-    <div class="flex gap-2">
-      {featured && <span class="text-[--color-accent]">精选</span>}
-      <span class="rounded-full bg-[--color-accent]/15 px-2 py-0.5 text-[--color-accent]">
-        {statusLabels[status] ?? status}
-      </span>
+    <div class="meta-row">
+      <time datetime={date.toISOString()}>{formatDate(date)}</time>
+      <div class="meta-badges">
+        {featured && <Badge variant="featured">精选</Badge>}
+        <Badge variant="status">{projectStatusLabels[status] ?? status}</Badge>
+      </div>
     </div>
-  </div>
-  <h3 class="font-serif text-xl font-medium text-[--color-text] group-hover:text-[--color-accent]">
-    {title}
-  </h3>
-  <p class="mt-2 line-clamp-3 flex-1 text-sm text-[--color-muted]">{description}</p>
-  {(techStack.length > 0 || tags.length > 0) && (
-    <div class="mt-4">
-      <TagList tags={techStack.length > 0 ? techStack : tags} muted />
-    </div>
-  )}
+    <h3 class="font-serif text-xl font-medium text-[--color-text] group-hover:text-[--color-accent]">
+      {title}
+    </h3>
+    <p class="mt-2 line-clamp-3 flex-1 text-sm text-[--color-muted]">{description}</p>
+    {(techStack.length > 0 || tags.length > 0) && (
+      <div class="mt-4">
+        <TagList tags={techStack.length > 0 ? techStack : tags} muted />
+      </div>
+    )}
   </div>
 </a>

@@ -8,6 +8,7 @@ cover: "/images/projects/liangxiangzhi-cover.png"
 repoUrl: "https://github.com/Valeera723/liangxiangzhi-prototype"
 featured: true
 techStack: ["H5", "Canvas", "DeepSeek", "Face Mesh"]
+listLayout: split
 draft: false
 ---
 
@@ -15,13 +16,11 @@ draft: false
 
 面向抖音情感、职场挂载场景的「古籍仪式感 × 可分享合拍签」轻产品——**不算命、不颜值打分、不替用户决定分合**。
 
-## 预览
+> 页顶为 H5 启卷页完整截图。在线 Demo 待后续部署；本地预览见文末命令。
 
-![启卷页](/images/projects/liangxiangzhi-cover.png)
+## 更多界面
 
-![交互界面](/images/projects/liangxiangzhi-screenshot-intro.png)
-
-> H5 原型需本地启动静态服务预览；在线 Demo 待后续部署。
+![交互流程](/images/projects/liangxiangzhi-screenshot-intro.png)
 
 ## 核心链路
 

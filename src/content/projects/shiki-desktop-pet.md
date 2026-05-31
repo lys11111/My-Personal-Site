@@ -7,6 +7,7 @@ tags: ["Electron", "AI Agent", "Desktop"]
 cover: "/images/projects/shiki-cover.png"
 featured: true
 techStack: ["Electron", "Vite", "React", "Python", "FastAPI"]
+listLayout: stack
 draft: false
 ---
 
@@ -14,11 +15,7 @@ draft: false
 
 Shiki 是一款面向 Windows 的桌面宠物 Agent：前端用 Electron 承载透明窗口与宠物动画，后端用 FastAPI 提供对话、搜索与角色包（Character Pack）管理能力。
 
-## 预览
-
-![Shiki 桌宠 Web UI](/images/projects/shiki-screenshot-ui.png)
-
-> 桌面应用暂无在线 Demo；上图为本地 Vite 开发界面。完整体验需在本机运行 Electron 窗口。
+> 页顶为本地 Vite 开发界面完整截图。桌面应用暂无在线 Demo，完整体验需在本机运行 Electron 窗口。
 
 ## 核心能力
 

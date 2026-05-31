@@ -1,12 +1,11 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
+import HashScroll from '../../components/HashScroll.astro';
 import { getCollection } from 'astro:content';
-import { isPublished } from '../../lib/content';
+import { sortPublishedByDate } from '../../lib/content';
 
-const articles = (await getCollection('learning'))
-  .filter((a) => isPublished(a.data.draft))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const articles = sortPublishedByDate(await getCollection('learning'));
 
 const categories = [...new Set(articles.map((a) => a.data.category))];
 ---
@@ -14,14 +13,14 @@ const categories = [...new Set(articles.map((a) => a.data.category))];
 <PageLayout title="学习" description="跨学科学习笔记">
   <header class="mb-10">
     <h1 class="font-serif text-4xl font-semibold">学习</h1>
-    <p class="mt-3 max-w-xl text-[--color-muted]">
+    <p class="mt-3 w-full whitespace-nowrap text-[--color-muted]">
       AI 产品、Prompt 工程、游戏机制、Launch 指标等方向的阅读与实践笔记。
     </p>
     {
       categories.length > 0 && (
-        <div class="mt-4 flex flex-wrap gap-2">
+        <div class="mt-4 flex flex-wrap items-center gap-2">
           {categories.map((cat) => (
-            <span class="rounded-full border border-[--color-border] px-3 py-1 text-xs text-[--color-muted]">
+            <span class="badge border border-[--color-border] text-[--color-muted] bg-transparent">
               {cat}
             </span>
           ))}
@@ -32,16 +31,20 @@ const categories = [...new Set(articles.map((a) => a.data.category))];
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
     {
       articles.map((article) => (
-        <ArticleCard
-          title={article.data.title}
-          description={article.data.description}
-          date={article.data.date}
-          href={`/learning/${article.id}`}
-          tags={article.data.tags}
-          category={article.data.category}
-          featured={article.data.featured}
-        />
+        <section id={article.id} class="scroll-mt-24">
+          <ArticleCard
+            title={article.data.title}
+            description={article.data.description}
+            date={article.data.date}
+            href={`/learning/${article.id}`}
+            tags={article.data.tags}
+            category={article.data.category}
+            featured={article.data.featured}
+          />
+        </section>
       ))
     }
   </div>
 </PageLayout>
+
+<HashScroll />
