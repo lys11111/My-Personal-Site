@@ -4,6 +4,8 @@ description: "基于姿态识别的移动端健身原型，含课程、打卡与
 date: 2025-10-15
 status: "prototype"
 tags: ["React", "Mobile", "Computer Vision"]
+cover: "/images/projects/aifit-cover.png"
+repoUrl: "https://github.com/lys11111/AI-Fit"
 featured: true
 techStack: ["React", "Vite", "Tailwind", "Radix UI", "MediaPipe"]
 draft: false
@@ -12,6 +14,14 @@ draft: false
 ## 项目简介
 
 AIFIT 是一款 AI 健身移动 App 原型，聚焦「动作识别 + 训练反馈」的体验闭环。前端采用 React + Tailwind 构建移动端 UI，姿态检测实验基于 MediaPipe。
+
+## 预览
+
+![欢迎页](/images/projects/aifit-screenshot-welcome.png)
+
+![首页](/images/projects/aifit-cover.png)
+
+![训练页](/images/projects/aifit-screenshot-training.png)
 
 ## 产品亮点
 
@@ -27,9 +37,14 @@ AIFIT 是一款 AI 健身移动 App 原型，聚焦「动作识别 + 训练反�
 | UI | Tailwind CSS 4 + Radix UI + Motion |
 | CV 实验 | MediaPipe Pose |
 
+## 链接与下载
+
+- **GitHub**：[lys11111/AI-Fit](https://github.com/lys11111/AI-Fit)
+- **在线 Demo**：暂无（可 clone 后 `npm run dev` 本地预览）
+
 ## 相关文档
 
-工作区路径：`AI项目/AI健身/AI健身app/aifit-mobile-app/`
+工作区路径：`AI项目与简历整理/AI健身/AI健身app/aifit-mobile-app/`
 
 - `docs/project-context.md` — 项目背景
 - `docs/design-tokens.md` — 设计规范

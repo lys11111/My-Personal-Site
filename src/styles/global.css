@@ -80,4 +80,16 @@
   .prose-content blockquote {
     @apply border-l-2 border-[--color-accent] pl-4 italic text-[--color-muted];
   }
+
+  .prose-content img {
+    @apply my-6 w-full rounded-lg border border-[--color-border];
+  }
+
+  .prose-content video {
+    @apply my-6 w-full rounded-lg border border-[--color-border];
+  }
+
+  .prose-content iframe {
+    @apply my-6 aspect-video w-full rounded-lg border border-[--color-border];
+  }
 }

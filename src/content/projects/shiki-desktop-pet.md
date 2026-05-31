@@ -4,6 +4,7 @@ description: "Windows 桌面宠物 + LLM 对话，支持角色包生成与 Atlas
 date: 2025-12-01
 status: "prototype"
 tags: ["Electron", "AI Agent", "Desktop"]
+cover: "/images/projects/shiki-cover.png"
 featured: true
 techStack: ["Electron", "Vite", "React", "Python", "FastAPI"]
 draft: false
@@ -12,6 +13,12 @@ draft: false
 ## 项目简介
 
 Shiki 是一款面向 Windows 的桌面宠物 Agent：前端用 Electron 承载透明窗口与宠物动画，后端用 FastAPI 提供对话、搜索与角色包（Character Pack）管理能力。
+
+## 预览
+
+![Shiki 桌宠 Web UI](/images/projects/shiki-screenshot-ui.png)
+
+> 桌面应用暂无在线 Demo；上图为本地 Vite 开发界面。完整体验需在本机运行 Electron 窗口。
 
 ## 核心能力
 
@@ -35,6 +42,11 @@ SQLite + 本地文件 (角色包 / 生成资源)
 - 搭建 Electron + Vite + Python 双进程开发环境
 - 设计角色包 manifest 契约与动画预览管线
 - 实现对话、设置、Bootstrap 等 API 路由
+
+## 链接与下载
+
+- **代码仓库**：工作区本地项目（`桌宠开发-shiki/`），尚未推送公开 GitHub
+- **在线 Demo**：无（桌面应用）
 
 ## 本地运行
 

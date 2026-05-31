@@ -1,0 +1,414 @@
+# PROJECT_CONTEXT — 项目上下文速览
+
+> **用途**：在新 IDE、新电脑或其他设备上打开本项目时，快速了解「这是什么、改哪里、怎么跑、怎么发」。  
+> **维护者**：龙文广  
+> **最后更新**：2026-05-29
+
+---
+
+## 快速本地开始
+
+### 1. 加载环境（3 步）
+
+| 步骤 | 说明 |
+|------|------|
+| **进入项目** | 本地：`z:\Desktop\vibe coding项目\personal-site`<br>新设备克隆：`git clone git@github.com:lys11111/My-Personal-Site.git` → `cd My-Personal-Site` |
+| **Node 版本** | **>= 22.12**（见 [`.node-version`](./.node-version)，当前为 `22`） |
+| **安装并启动** | `npm install` → `npm run dev` → http://localhost:4321 |
+
+环境说明：
+
+- **无需 `.env`**：本地开发零配置，无环境变量文件
+- **无需配置 Cloudflare**：部署 Secrets 在 GitHub 仓库侧，本地不用管
+- **构建验证**（部署前建议）：`npm run build`（产物 `dist/`，已 gitignore）→ `npm run preview`
+
+### 2. 改内容：只动这些路径
+
+```text
+src/content/
+├── learning/*.md     →  /learning/{文件名}
+├── projects/*.md     →  /projects/{文件名}
+└── notes/*.md        →  /notes/{文件名}
+```
+
+- 文件名 = URL slug（小写英文 + 连字符，不要用中文文件名）
+- frontmatter 规范见 [`src/content.config.ts`](./src/content.config.ts)
+- 模板与 draft 规则详见下文「内容编辑规则」
+
+### 3. 改页面 / 样式：常用路径
+
+| 任务 | 路径 |
+|------|------|
+| 首页 | `src/pages/index.astro` |
+| 关于 / 联系方式 | `src/pages/about.astro` |
+| 顶部导航 | `src/components/Navbar.astro` |
+| 页脚 | `src/components/Footer.astro` |
+| 主题色 / 字体 | `src/styles/global.css` |
+| 项目卡片样式 | `src/components/ProjectCard.astro` |
+| 内容 schema | `src/content.config.ts` |
+| 静态资源（favicon、简历 PDF） | `public/` |
+| 部署流水线 | `.github/workflows/deploy-cloudflare-pages.yml` |
+
+完整目录说明见下文「目录地图」。
+
+### 4. 日常编辑流程（复制即用）
+
+在 **vibe coding 工作区** 下从根目录开始；若已 `cd` 进本仓库，可跳过第一行。
+
+```bash
+cd personal-site
+npm run dev          # 本地预览 http://localhost:4321
+# 编辑 src/content/learning|projects|notes/*.md
+git add . && git commit -m "content: 描述" && git push   # 推送到 main 后自动部署
+```
+
+- 首次在本机：先执行 `npm install`（见上文 §1）
+- 部署前可选：`npm run build` 确认能通过构建
+- 线上约 1～2 分钟更新：https://lys11111-personal-site.pages.dev  
+- 部署状态：https://github.com/lys11111/My-Personal-Site/actions  
+
+更多发布说明见下文「发布流程」。
+
+---
+
+## 30 秒了解
+
+| 项 | 值 |
+|----|-----|
+| **是什么** | 个人展示网站（简历补充），展示学习笔记 + Vibe Coding 项目 |
+| **技术栈** | Astro 6 · Tailwind CSS 4 · Markdown Content Collections |
+| **内容怎么写** | 编辑 `src/content/` 下的 `.md` 文件，**不是**改数据库或后台 |
+| **怎么发布** | `git push` 到 `main` → GitHub Actions 自动构建部署到 Cloudflare |
+| **线上地址** | https://lys11111-personal-site.pages.dev |
+| **代码仓库** | https://github.com/lys11111/My-Personal-Site |
+
+**大多数日常操作 = 改 Markdown → 本地预览 → push，无需碰 Cloudflare。**  
+本地启动与环境加载见上文「快速本地开始」。
+
+---
+
+## 目录地图：想改什么就去哪
+
+```
+personal-site/
+├── src/content/              ★ 主要编辑区：所有文章/项目正文
+│   ├── learning/               学习笔记
+│   ├── projects/               项目展示
+│   └── notes/                  随笔
+├── src/content.config.ts       ★ 内容类型 schema（改 frontmatter 字段来这里）
+├── src/pages/                  页面路由（改列表页、关于页等）
+├── src/layouts/                页面外壳（导航、文章详情框架）
+├── src/components/             卡片、标签等 UI 组件
+├── src/styles/global.css       全局样式、主题色、prose 排版
+├── public/                     静态文件（favicon、将来放 resume.pdf）
+├── astro.config.mjs            Astro + Tailwind + MDX 配置
+├── wrangler.toml               Cloudflare 项目名（lys11111-personal-site）
+└── .github/workflows/          自动部署流水线（一般不用改）
+```
+
+### 常见任务 → 改哪个文件
+
+| 我想… | 去这里 |
+|--------|--------|
+| 写一篇学习笔记 | `src/content/learning/新文件名.md` |
+| 加一个项目 | `src/content/projects/新文件名.md` |
+| 写随笔 | `src/content/notes/新文件名.md` |
+| 改首页文案/布局 | `src/pages/index.astro` |
+| 改关于页、联系方式 | `src/pages/about.astro` |
+| 改顶部导航 | `src/components/Navbar.astro` |
+| 改页脚 | `src/components/Footer.astro` |
+| 改主题色/字体 | `src/styles/global.css`（`@theme` 变量） |
+| 改项目卡片样式 | `src/components/ProjectCard.astro` |
+| 新增 frontmatter 字段 | `src/content.config.ts` + 对应 layout/页面 |
+| 改部署/Cloudflare | `.github/workflows/deploy-cloudflare-pages.yml` |
+
+---
+
+## 内容编辑规则
+
+### 文件命名 = URL slug
+
+- 文件 `src/content/projects/shiki-desktop-pet.md` → 网址 `/projects/shiki-desktop-pet`
+- 文件名用小写英文 + 连字符，**不要用中文文件名**
+
+### 三种内容类型
+
+**1. 学习笔记** `src/content/learning/*.md`
+
+```yaml
+---
+title: "标题"
+description: "摘要，用于列表和 SEO"
+date: 2026-05-29          # YYYY-MM-DD
+category: "AI产品"          # 列表页显示的分类
+tags: ["Prompt"]
+featured: false             # true 会在首页「最近学习」更突出
+draft: false                # true：本地可见，上线不可见
+---
+
+正文用 Markdown 写在这里。
+```
+
+**2. 项目** `src/content/projects/*.md`
+
+```yaml
+---
+title: "项目名"
+description: "一句话"
+date: 2026-05-29
+status: "prototype"         # demo | prototype | archived
+tags: ["Electron"]
+demoUrl: "https://..."      # 可选，有则显示「查看 Demo」
+repoUrl: "https://github.com/..."  # 可选，有则显示 GitHub 按钮
+featured: true                # true 出现在首页「精选项目」
+techStack: ["Electron", "Vite"]
+draft: false
+---
+```
+
+**3. 随笔** `src/content/notes/*.md`
+
+```yaml
+---
+title: "标题"
+description: "摘要"
+date: 2026-05-29
+tags: ["Meta"]
+draft: false
+---
+```
+
+### draft 行为
+
+| 环境 | `draft: true` 是否显示 |
+|------|------------------------|
+| `npm run dev` | 显示 |
+| `npm run build` / 线上 | **不显示** |
+
+逻辑在 `src/lib/content.ts` → `isPublished()`。
+
+---
+
+## 放置图片、视频、文件与外链
+
+站点是静态站，**没有后台上传**。资源来自 `public/` 目录里的文件，或正文 / frontmatter 里的 HTTPS 链接。`git push` 后 Cloudflare 会一并部署 `public/` 下的内容。
+
+### 能力对照
+
+| 内容 | 能否展示 | 做法 |
+|------|----------|------|
+| 网页链接（Demo、GitHub、Notion 等） | 能 | 项目 frontmatter 的 `demoUrl` / `repoUrl`（详情页顶部按钮）；正文 `[文字](https://...)` |
+| Demo 图片 | 能 | 放入 `public/images/`，正文 `![说明](/images/xxx.png)`；或外链图床 URL |
+| Demo 视频 | 能 | 小视频放 `public/videos/`，正文用 HTML `<video>`；大视频建议 B 站 / YouTube 链接 |
+| 可下载文件（PDF、zip 等） | 能 | 放 `public/files/`，正文 `[下载说明](/files/xxx.pdf)` |
+| 内嵌在线 Demo | 部分能 | 正文 `<iframe src="https://...">`（目标站须允许嵌入）；否则只用 `demoUrl` 新开标签页 |
+| 项目封面 `cover` | 能 | frontmatter 填 `/images/projects/xxx-cover.png`；首页卡片与详情页头图已接入 |
+
+### 推荐 `public/` 目录
+
+```text
+public/
+├── images/
+│   └── projects/    # 项目封面与截图（当前 3 个项目已入库）
+├── videos/          # mp4/webm（建议单文件 < 20MB）
+├── files/           # 可下载 md/PDF 等
+└── resume.pdf       # 简历（about 页可链到 /resume.pdf）
+```
+
+目录不存在时可自行新建；路径以 `/` 开头，对应 `public/` 根目录。
+
+### 示例（项目 Markdown）
+
+文件：`src/content/projects/shiki-desktop-pet.md`
+
+```markdown
+---
+title: "Shiki 桌宠 Agent"
+demoUrl: "https://你的在线-demo.com"
+repoUrl: "https://github.com/..."
+---
+
+![桌宠界面](/images/shiki-screenshot.png)
+
+<video src="/videos/shiki-demo.mp4" controls width="100%"></video>
+
+[下载 Windows 安装包](/files/shiki-setup.zip)
+
+[在线原型](https://example.com/prototype)
+```
+
+学习笔记、随笔同样可在正文里插入图片、视频 HTML 与下载链接。
+
+### 内嵌网页（iframe）
+
+```html
+<iframe src="https://你的-demo.pages.dev" width="100%" height="480" title="Demo"></iframe>
+```
+
+若页面空白或报错，多为目标站禁止 iframe（`X-Frame-Options`）。改用在 frontmatter 填 `demoUrl`，或正文放普通链接。
+
+### 限制与注意
+
+- **Git 仓库体积**：视频、大 PDF 会随仓库变大；超大视频请用外链，不要提交进 repo。
+- **Cloudflare Pages**：单文件部署上限约 **25MB**（以 Cloudflare 当前政策为准），超大文件不宜放 `public/`。
+- **预览与发布**：`npm run dev` 本地看效果 → 确认无误后按上文「日常编辑流程」`git push` 自动上线。
+
+---
+
+## 当前已有内容（截至 2026-05-29）
+
+### 项目 `src/content/projects/`
+
+| slug | 标题 | 封面 / 媒体 |
+|------|------|-------------|
+| `shiki-desktop-pet` | Shiki 桌宠 Agent | `cover` + UI 截图；无公开 repo |
+| `aifit-mobile` | AIFIT · AI 健身 App | `cover` + 3 张截图；[GitHub](https://github.com/lys11111/AI-Fit) |
+| `liangxiangzhi` | 两相知 · AI 文创关系签 | `cover` + 截图；[GitHub](https://github.com/Valeera723/liangxiangzhi-prototype)；PRD/playbook 见 `/files/` |
+
+静态资源目录：`public/images/projects/`、`public/files/`。重新生成截图可运行 `node scripts/capture-project-screenshots.mjs`（需 Playwright Chromium）。
+
+### 学习 `src/content/learning/`
+
+| slug | 标题 |
+|------|------|
+| `prompt-json-constraints` | Prompt 工程中的 JSON 强约束实践 |
+| `ai-game-mechanics` | AI 互动游戏的产品机制思考 |
+
+### 随笔 `src/content/notes/`
+
+| slug | 标题 |
+|------|------|
+| `how-this-site-works` | 这个网站是怎么运作的 |
+
+---
+
+## 页面与路由一览
+
+| 路径 | 文件 | 说明 |
+|------|------|------|
+| `/` | `src/pages/index.astro` | 首页 |
+| `/about` | `src/pages/about.astro` | 关于（联系方式在此改） |
+| `/projects` | `src/pages/projects/index.astro` | 项目列表 |
+| `/projects/[slug]` | `src/pages/projects/[...slug].astro` | 项目详情（自动生成） |
+| `/learning` | `src/pages/learning/index.astro` | 学习列表 |
+| `/learning/[slug]` | `src/pages/learning/[...slug].astro` | 笔记详情 |
+| `/notes` | `src/pages/notes/index.astro` | 随笔列表 |
+| `/notes/[slug]` | `src/pages/notes/[...slug].astro` | 随笔详情 |
+
+详情页共用 `src/layouts/ArticleLayout.astro`；列表/静态页用 `PageLayout.astro`。
+
+---
+
+## 设计系统（改样式时参考）
+
+定义在 `src/styles/global.css` 的 `@theme`：
+
+| 变量 | 用途 | 当前值 |
+|------|------|--------|
+| `--color-bg` | 背景 | `#0a0a0b` |
+| `--color-surface` | 卡片背景 | `#141416` |
+| `--color-text` | 主文字 | `#e8e6e3` |
+| `--color-muted` | 次要文字 | `#9a9690` |
+| `--color-accent` | 强调色 | `#d4a574` |
+| `--font-serif` | 标题字体 | Noto Serif SC |
+| `--font-sans` | 正文字体 | Inter / 系统 sans |
+
+正文区域使用 `.prose-content` 类控制 Markdown 渲染样式。
+
+---
+
+## 发布流程（日常）
+
+与上文「快速本地开始 → 日常编辑流程」相同，拆开写便于单独复制：
+
+```bash
+cd personal-site
+npm run dev          # 本地预览 http://localhost:4321
+# 编辑 src/content/learning|projects|notes/*.md
+git add . && git commit -m "content: 新增 xxx 项目说明" && git push
+```
+
+- 推送到 `main` 后，GitHub Actions 自动：`npm ci` → `npm run build` → 上传到 Cloudflare
+- 约 1～2 分钟后线上更新
+- 查看部署状态：https://github.com/lys11111/My-Personal-Site/actions
+
+**不需要**在每台设备上配置 Cloudflare；Secrets 已在 GitHub 仓库里配好一次即可。
+
+手动重跑部署：GitHub → Actions → Deploy to Cloudflare Pages → Run workflow。
+
+---
+
+## 重要约束与踩坑（必读）
+
+1. **Content 配置路径**  
+   Astro 6 使用 `src/content.config.ts`，**不是** `src/content/config.ts`。改 schema 只改根下这个文件。
+
+2. **每个 collection 必须有 `loader`**  
+   本项目用 `glob` loader 扫描 `src/content/learning` 等目录。
+
+3. **Cloudflare 项目名**  
+   固定为 `lys11111-personal-site`（`wrangler.toml` + workflow 里一致）。  
+   不要用 `my-personal-site`，该 pages.dev 子域已被他人占用。
+
+4. **frontmatter 必须符合 schema**  
+   缺字段或类型错误会导致 `npm run build` 失败；本地 `npm run dev` 也可能报错。
+
+5. **`dist/` 和 `node_modules/` 不要提交**  
+   已在 `.gitignore` 中。
+
+6. **关于页联系方式**  
+   `src/pages/about.astro` 里邮箱仍是 `【待填】`，可按需补充；简历 PDF 可放 `public/resume.pdf`。
+
+---
+
+## 关联工作区（内容素材来源）
+
+本站 Markdown 摘要来自工作区其他项目，**代码并不都在本仓库内**：
+
+| 网站项目 slug | 本地素材路径（工作区相对路径） |
+|---------------|-------------------------------|
+| shiki-desktop-pet | `../桌宠开发-shiki/` |
+| aifit-mobile | `../AI项目/AI健身/AI健身app/` |
+| liangxiangzhi | `../AI项目/AI面相识别与卦算 两相知/` |
+| 学习笔记素材 | `../AI项目/开为科技工作记录/`、`../AI项目/AI 游戏相关/` |
+
+简历相关文件在 `../AI项目/00-简历与求职/`（与本站分离，不自动同步）。
+
+---
+
+## 文档索引
+
+| 文档 | 内容 |
+|------|------|
+| **本文** `PROJECT_CONTEXT.md` | 跨设备快速上手；**第一节「快速本地开始」**为环境 + 路径速查 |
+| `README.md` | 精简版使用说明 |
+| `DEPLOY.md` | Cloudflare / Secrets / 部署故障排查 |
+| `docs/建站与部署全记录.md` | 从零建站与部署的完整过程、原理、踩坑 |
+
+---
+
+## 给 AI / 新协作者的提示
+
+若在本项目中继续开发，请优先：
+
+1. **内容变更** → 只改 `src/content/**/*.md`，保持 frontmatter 与 `src/content.config.ts` 一致  
+2. **UI 小改** → 改对应 `.astro` 组件，风格跟随 `global.css` 现有 token  
+3. **不要**引入数据库、CMS、或 Next.js 式 API 路由，除非明确要求  
+4. **不要**改 Cloudflare 项目名或 GitHub Secrets 名称，除非同步改 workflow + wrangler  
+5. 改完运行 `npm run build` 确认通过再 push  
+6. 部署细节见 `DEPLOY.md`，历史背景见 `docs/建站与部署全记录.md`
+
+---
+
+## 环境要求速查
+
+| 依赖 | 版本 |
+|------|------|
+| Node.js | >= 22.12（`.node-version` 为 22） |
+| 包管理 | npm（有 `package-lock.json`，CI 用 `npm ci`） |
+| Git 远程 | `git@github.com:lys11111/My-Personal-Site.git` |
+| 分支 | `main`（生产部署分支） |
+
+---
+
+*在新设备打开项目时，先读上文「快速本地开始」→ `npm install && npm run dev` 即可编辑。*

@@ -2,6 +2,22 @@
 
 龙文广的个人展示网站 — 学习笔记、Vibe Coding 项目与简历补充内容。
 
+> **跨设备 / 新环境上手**：请先阅读 [`PROJECT_CONTEXT.md`](./PROJECT_CONTEXT.md) 的 **「快速本地开始」** 一节  
+> **完整建站与部署记录**：见 [`docs/建站与部署全记录.md`](./docs/建站与部署全记录.md)
+
+## 日常流程
+
+在 vibe coding 工作区根目录下（已克隆本仓库则跳过 `cd`）：
+
+```bash
+cd personal-site
+npm run dev          # 本地预览 http://localhost:4321
+# 编辑 src/content/learning|projects|notes/*.md
+git add . && git commit -m "content: 描述" && git push   # 推送到 main 后自动部署
+```
+
+首次在本机需先 `npm install`。线上地址：https://lys11111-personal-site.pages.dev
+
 ## 本地开发
 
 ```bash
@@ -58,6 +74,10 @@ draft: false
 ### 草稿模式
 
 设置 `draft: true` 可在本地 `npm run dev` 预览，但 `npm run build` 时不会发布。
+
+### 图片 / 视频 / 文件
+
+静态资源放 `public/images/`、`public/videos/`、`public/files/`，在 Markdown 正文引用（如 `![说明](/images/xxx.png)`）。项目页还可在 frontmatter 填 `demoUrl` / `repoUrl` 显示顶部按钮。完整说明见 **[PROJECT_CONTEXT.md — 放置图片、视频、文件与外链](./PROJECT_CONTEXT.md#放置图片视频文件与外链)**。
 
 ## Cloudflare Pages 部署
 

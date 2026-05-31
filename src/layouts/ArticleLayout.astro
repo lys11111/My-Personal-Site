@@ -12,6 +12,7 @@ interface Props {
   status?: string;
   demoUrl?: string;
   repoUrl?: string;
+  cover?: string;
   techStack?: string[];
 }
 
@@ -24,6 +25,7 @@ const {
   status,
   demoUrl,
   repoUrl,
+  cover,
   techStack = [],
 } = Astro.props;
 ---
@@ -44,6 +46,13 @@ const {
       </div>
       <h1 class="font-serif text-4xl font-semibold tracking-tight text-[--color-text]">{title}</h1>
       <p class="mt-4 max-w-2xl text-lg text-[--color-muted]">{description}</p>
+      {
+        cover && (
+          <div class="mt-6 aspect-video max-w-[720px] overflow-hidden rounded-xl border border-[--color-border]">
+            <img src={cover} alt="" class="h-full w-full object-cover" loading="eager" />
+          </div>
+        )
+      }
       {(demoUrl || repoUrl) && (
         <div class="mt-6 flex flex-wrap gap-3">
           {demoUrl && (

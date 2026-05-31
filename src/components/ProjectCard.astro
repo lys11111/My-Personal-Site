@@ -8,6 +8,7 @@ interface Props {
   date: Date;
   href: string;
   status: string;
+  cover?: string;
   tags?: string[];
   techStack?: string[];
   featured?: boolean;
@@ -19,14 +20,36 @@ const statusLabels: Record<string, string> = {
   archived: '归档',
 };
 
-const { title, description, date, href, status, tags = [], techStack = [], featured = false } =
-  Astro.props;
+const {
+  title,
+  description,
+  date,
+  href,
+  status,
+  cover,
+  tags = [],
+  techStack = [],
+  featured = false,
+} = Astro.props;
 ---
 
 <a
   href={href}
-  class="group flex h-full flex-col rounded-xl border border-[--color-border] bg-[--color-surface] p-5 transition-all hover:border-[--color-accent]/40 hover:bg-[--color-surface-hover]"
+  class="group flex h-full flex-col overflow-hidden rounded-xl border border-[--color-border] bg-[--color-surface] transition-all hover:border-[--color-accent]/40 hover:bg-[--color-surface-hover]"
 >
+  {
+    cover && (
+      <div class="aspect-video overflow-hidden border-b border-[--color-border]">
+        <img
+          src={cover}
+          alt=""
+          class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          loading="lazy"
+        />
+      </div>
+    )
+  }
+  <div class="flex flex-1 flex-col p-5">
   <div class="mb-3 flex items-center justify-between gap-2 text-xs">
     <time class="text-[--color-muted]" datetime={date.toISOString()}>{formatDate(date)}</time>
     <div class="flex gap-2">
@@ -45,4 +68,5 @@ const { title, description, date, href, status, tags = [], techStack = [], featu
       <TagList tags={techStack.length > 0 ? techStack : tags} muted />
     </div>
   )}
+  </div>
 </a>

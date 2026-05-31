@@ -4,6 +4,8 @@ description: "古籍仪式感 × 本地面相取象 × 关系合参，面向抖�
 date: 2025-08-20
 status: "demo"
 tags: ["H5", "AIGC", "Hackathon"]
+cover: "/images/projects/liangxiangzhi-cover.png"
+repoUrl: "https://github.com/Valeera723/liangxiangzhi-prototype"
 featured: true
 techStack: ["H5", "Canvas", "DeepSeek", "Face Mesh"]
 draft: false
@@ -12,6 +14,14 @@ draft: false
 ## 一句话定位
 
 面向抖音情感、职场挂载场景的「古籍仪式感 × 可分享合拍签」轻产品——**不算命、不颜值打分、不替用户决定分合**。
+
+## 预览
+
+![启卷页](/images/projects/liangxiangzhi-cover.png)
+
+![交互界面](/images/projects/liangxiangzhi-screenshot-intro.png)
+
+> H5 原型需本地启动静态服务预览；在线 Demo 待后续部署。
 
 ## 核心链路
 
@@ -27,8 +37,22 @@ draft: false
 - 用「势能 72–92」代替命中注定表述
 - 不写相克、克夫、必须分手等敏感措辞
 
+## 链接与下载
+
+- **GitHub**：[Valeera723/liangxiangzhi-prototype](https://github.com/Valeera723/liangxiangzhi-prototype)
+- **产品方案**：[下载 PRD（Markdown）](/files/liangxiangzhi-prd.md)
+- **生成逻辑手册**：[下载 generation-playbook](/files/liangxiangzhi-generation-playbook.md)
+
 ## 产出物
 
 - PRD + 生成逻辑手册（generation-playbook）
 - H5 静态可演示原型
 - 黑客松答辩一页纸素材
+
+## 本地预览
+
+```bash
+cd liangxiangzhi-prototype-main
+npx serve -l 5173
+# 打开 http://127.0.0.1:5173/prototype/index.html
+```
