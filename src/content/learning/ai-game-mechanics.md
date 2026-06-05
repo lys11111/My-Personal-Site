@@ -2,7 +2,7 @@
 title: "AI 互动游戏的产品机制思考"
 description: "从穗潮湾、摸鱼海湾到开放剧情类玩法的机制拆解与可开发配置"
 date: 2026-04-10
-category: "AI游戏"
+category: "个人思考"
 tags: ["Game Design", "AIGC", "Product"]
 featured: false
 draft: false
@@ -42,4 +42,5 @@ draft: false
 
 ## 延伸阅读
 
+- [AI互动叙事产品学习](/learning/ai-interactive-narrative) — 需求分层、竞品格局、数据指标与跨部门协作
 - [游戏美术 AI 与玩法类型笔记](/learning/game-art-ai-and-genres) — 美术 AI 介入点、玩法家族分类与核心循环

@@ -2,7 +2,7 @@
 title: "Prompt 工程中的 JSON 强约束实践"
 description: "出海 AI 互动叙事场景下，如何用结构化输出保证叙事引擎稳定交付"
 date: 2026-03-15
-category: "AI产品"
+category: "个人思考"
 tags: ["Prompt", "AIGC", "Workflow"]
 featured: true
 draft: false
@@ -36,3 +36,7 @@ draft: false
 ## 可复用模式
 
 「模板改写」机制：在固定章节结构与约束不变前提下，将新剧本信息映射进人设/世界观字段，降低新内容接入成本。
+
+## 延伸阅读
+
+- [AIGC 学习与应用总结](/learning/aigc-learning-summary) — 生图/生视频框架、模型选型与短片制作链路

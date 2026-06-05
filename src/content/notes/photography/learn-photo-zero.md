@@ -4,6 +4,11 @@ description: "曝光三要素、器材选购、题材参数与审美后期——
 date: 2026-06-05
 category: "摄影"
 tags: ["摄影", "曝光", "器材"]
+externalLinks:
+  - label: "一键跳转小红书看图文版（上篇）"
+    url: "http://xhslink.com/o/2j78a5BdIfm"
+  - label: "一键跳转小红书看图文版（下篇）"
+    url: "http://xhslink.com/o/6sK1JZxpcTr"
 draft: false
 ---
 

@@ -8,7 +8,7 @@ const learning = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
-    category: z.string(),
+    category: z.enum(['AI+行业', '实习学习', '个人思考']),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
@@ -51,6 +51,15 @@ const notes = defineCollection({
     externalUrl: z.string().url().optional(),
     /** 外链按钮文案，默认「在小红书查看」 */
     externalLabel: z.string().optional(),
+    /** 多个站外链接（如小红书图文上/下篇） */
+    externalLinks: z
+      .array(
+        z.object({
+          label: z.string(),
+          url: z.string().url(),
+        }),
+      )
+      .optional(),
     /** 详情页底部显示 Giscus 留言板 */
     guestbook: z.boolean().default(false),
     draft: z.boolean().default(false),

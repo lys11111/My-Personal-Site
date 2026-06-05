@@ -4,6 +4,8 @@ description: "柔硬光、热靴灯设置、单灯布光与色温法——人像
 date: 2026-06-05
 category: "摄影"
 tags: ["摄影", "布光", "闪光灯"]
+externalUrl: "http://xhslink.com/o/3TrgXttWOi8"
+externalLabel: "一键跳转小红书看图文版"
 draft: false
 ---
 

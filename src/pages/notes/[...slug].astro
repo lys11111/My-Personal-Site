@@ -13,8 +13,17 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, description, date, tags, category, externalUrl, externalLabel, guestbook } =
-  entry.data;
+const {
+  title,
+  description,
+  date,
+  tags,
+  category,
+  externalUrl,
+  externalLabel,
+  externalLinks,
+  guestbook,
+} = entry.data;
 ---
 
 <ArticleLayout
@@ -25,6 +34,7 @@ const { title, description, date, tags, category, externalUrl, externalLabel, gu
   {category}
   {externalUrl}
   externalLabel={externalLabel ?? '在小红书查看'}
+  externalLinks={externalLinks}
   guestbook={guestbook}
   guestbookTerm={guestbook ? `${entry.id}-guestbook` : undefined}
 >

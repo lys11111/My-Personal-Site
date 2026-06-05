@@ -2,7 +2,7 @@
 title: "AI 时代影视工业的变革"
 description: "从前期剧本到虚拟制片、后期与宣发，梳理 AI 在影视各环节的能力边界，以及 3DGS、世界模型对游戏与场景建设的意义"
 date: 2026-05-31
-category: "AIGC"
+category: "AI+行业"
 tags: ["Film", "Virtual Production", "3DGS", "World Model"]
 featured: true
 draft: false

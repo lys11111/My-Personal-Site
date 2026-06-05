@@ -4,23 +4,24 @@ import ArticleCard from '../../components/ArticleCard.astro';
 import HashScroll from '../../components/HashScroll.astro';
 import { getCollection } from 'astro:content';
 import { sortPublishedByDate } from '../../lib/content';
+import { groupLearningByCategory, sortLearningCategories } from '../../lib/learning';
 
 const articles = sortPublishedByDate(await getCollection('learning'));
-
-const categories = [...new Set(articles.map((a) => a.data.category))];
+const groups = groupLearningByCategory(articles);
+const categories = sortLearningCategories(groups);
 ---
 
 <PageLayout title="学习" description="跨学科学习笔记">
   <header class="mb-10">
     <h1 class="font-serif text-4xl font-semibold">学习</h1>
-    <p class="mt-3 w-full whitespace-nowrap text-[--color-muted]">
-      AI 产品、Prompt 工程、游戏机制、Launch 指标等方向的阅读与实践笔记。
+    <p class="mt-3 max-w-2xl text-[--color-muted]">
+      AI 产品、Prompt 工程、游戏机制、行业观察等方向的阅读与实践笔记，按 AI+行业、实习学习、个人思考整理。
     </p>
     {
       categories.length > 0 && (
         <div class="mt-4 flex flex-wrap items-center gap-2">
           {categories.map((cat) => (
-            <span class="badge border border-[--color-border] text-[--color-muted] bg-transparent">
+            <span class="badge border border-[--color-border] bg-transparent text-[--color-muted]">
               {cat}
             </span>
           ))}
@@ -28,19 +29,33 @@ const categories = [...new Set(articles.map((a) => a.data.category))];
       )
     }
   </header>
-  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+  <div class="space-y-14">
     {
-      articles.map((article) => (
-        <section id={article.id} class="scroll-mt-24">
-          <ArticleCard
-            title={article.data.title}
-            description={article.data.description}
-            date={article.data.date}
-            href={`/learning/${article.id}`}
-            tags={article.data.tags}
-            category={article.data.category}
-            featured={article.data.featured}
-          />
+      categories.map((category) => (
+        <section class="scroll-mt-24">
+          <div class="mb-6 border-b border-[--color-border] pb-4">
+            <h2 class="font-serif text-2xl font-medium text-[--color-text]">{category}</h2>
+          </div>
+          {(groups.get(category) ?? []).length > 0 ? (
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {(groups.get(category) ?? []).map((article) => (
+                <section id={article.id} class="scroll-mt-24">
+                  <ArticleCard
+                    title={article.data.title}
+                    description={article.data.description}
+                    date={article.data.date}
+                    href={`/learning/${article.id}`}
+                    tags={article.data.tags}
+                    category={article.data.category}
+                    featured={article.data.featured}
+                  />
+                </section>
+              ))}
+            </div>
+          ) : (
+            <p class="text-sm text-[--color-muted]">暂无文章，后续更新。</p>
+          )}
         </section>
       ))
     }

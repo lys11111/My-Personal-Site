@@ -2,7 +2,7 @@
 title: "游戏美术 AI 与玩法类型笔记"
 description: "游戏美术 AI 在设计、美术、流程上的介入点，以及玩法家族分类、简称对照、核心循环与市场组合公式"
 date: 2026-05-31
-category: "AI游戏"
+category: "AI+行业"
 tags: ["AIGC", "Game Design", "Game Art", "Research"]
 featured: true
 draft: false
