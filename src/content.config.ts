@@ -51,6 +51,8 @@ const notes = defineCollection({
     externalUrl: z.string().url().optional(),
     /** 外链按钮文案，默认「在小红书查看」 */
     externalLabel: z.string().optional(),
+    /** 详情页底部显示 Giscus 留言板 */
+    guestbook: z.boolean().default(false),
     draft: z.boolean().default(false),
   }),
 });

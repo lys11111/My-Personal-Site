@@ -1,11 +1,12 @@
 ---
-title: "摄影 · 个人笔记"
+title: "摄影栏目介绍"
 description: "用镜头记录的日常与练习，完整版同步发布于小红书"
 date: 2026-05-31
 category: "摄影"
 tags: ["摄影", "爱好"]
 externalUrl: "https://www.xiaohongshu.com/user/profile/628b3dcd00000000210208e0?tab=note&subTab=note"
 externalLabel: "查看小红书主页"
+guestbook: true
 draft: false
 ---
 
@@ -19,7 +20,9 @@ draft: false
 
 ## 专栏里有什么
 
-- **专栏介绍**（本篇）：方向与更新节奏
+- **摄影栏目介绍**（本篇）：方向与更新节奏
+- **从零学摄影**：[系统入门笔记](/notes/photography/learn-photo-zero)——曝光、器材、题材与审美
+- **从零开始学灯光**：[人像布光笔记](/notes/photography/learn-light-zero)——柔硬光、热靴灯与单灯实战
 - **单篇笔记**：站内正文 +「在小红书查看」直达该条笔记
 
 有新作品时，我会先在这里写一版短文，再同步到 [小红书主页](https://www.xiaohongshu.com/user/profile/628b3dcd00000000210208e0?tab=note&subTab=note)。

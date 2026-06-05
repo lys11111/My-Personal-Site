@@ -6,10 +6,13 @@ export type NoteEntry = CollectionEntry<'notes'>;
 export const XHS_PROFILE_URL =
   'https://www.xiaohongshu.com/user/profile/628b3dcd00000000210208e0?tab=note&subTab=note';
 
-/** 列表页分类展示顺序，未列出的排在后面按字母序 */
-export const NOTE_CATEGORY_ORDER = ['摄影', '站点'] as const;
+/** 列表页与导航下拉分类展示顺序 */
+export const NOTE_CATEGORY_ORDER = ['摄影', '经济', '站点'] as const;
 
-const UNCATEGORIZED = '其他';
+const UNCATEGORIZED = '未分类';
+
+export type NoteNavItem = { id: string; title: string };
+export type NoteNavGroup = { label: string; items: NoteNavItem[] };
 
 /**
  * 按分类分组随笔，专栏 hub（如 photography）排在同分类最前
@@ -44,17 +47,30 @@ export function groupNotesByCategory(notes: NoteEntry[]): Map<string, NoteEntry[
  */
 export function sortNoteCategories(groups: Map<string, NoteEntry[]>): string[] {
   const keys = [...groups.keys()];
-  const ordered: string[] = [];
-
-  for (const cat of NOTE_CATEGORY_ORDER) {
-    if (groups.has(cat)) ordered.push(cat);
-  }
+  const ordered: string[] = [...NOTE_CATEGORY_ORDER];
 
   const rest = keys
     .filter((k) => !NOTE_CATEGORY_ORDER.includes(k as (typeof NOTE_CATEGORY_ORDER)[number]))
     .sort((a, b) => a.localeCompare(b, 'zh-CN'));
 
   return [...ordered, ...rest];
+}
+
+export function toNoteNavItems(notes: NoteEntry[]): NoteNavItem[] {
+  return notes.map((note) => ({ id: note.id, title: note.data.title }));
+}
+
+/**
+ * 按固定分类生成分组导航（与项目下拉安卓端/Web 端模式一致）
+ * @param notes 已排序的随笔列表
+ */
+export function getGroupedNotesForNav(notes: NoteEntry[]): NoteNavGroup[] {
+  const groups = groupNotesByCategory(notes);
+
+  return NOTE_CATEGORY_ORDER.map((label) => ({
+    label,
+    items: toNoteNavItems(groups.get(label) ?? []),
+  }));
 }
 
 /**

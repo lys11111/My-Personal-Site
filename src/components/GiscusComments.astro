@@ -1,0 +1,71 @@
+---
+import { GISCUS_CONFIG, isGiscusConfigured } from '../lib/giscus';
+
+interface Props {
+  /** 配合 mapping=specific，区分不同页面的讨论串 */
+  term?: string;
+}
+
+const { term = 'guestbook' } = Astro.props;
+const configured = isGiscusConfigured();
+const {
+  repo,
+  repoId,
+  category,
+  categoryId,
+  mapping,
+  strict,
+  reactionsEnabled,
+  emitMetadata,
+  inputPosition,
+  theme,
+  lang,
+} = GISCUS_CONFIG;
+---
+
+<section class="not-prose mt-16 border-t border-[--color-border] pt-10">
+  <h2 class="font-serif text-2xl font-semibold text-[--color-text]">留言板</h2>
+  <p class="mt-2 text-sm text-[--color-muted]">
+    欢迎留下想法或建议。留言需使用 GitHub 账号登录。
+  </p>
+  {
+    configured ? (
+      <div class="giscus mt-6 min-h-[200px]">
+        <script
+          is:inline
+          src="https://giscus.app/client.js"
+          data-repo={repo}
+          data-repo-id={repoId}
+          data-category={category}
+          data-category-id={categoryId}
+          data-mapping={mapping}
+          data-term={term}
+          data-strict={strict}
+          data-reactions-enabled={reactionsEnabled}
+          data-emit-metadata={emitMetadata}
+          data-input-position={inputPosition}
+          data-theme={theme}
+          data-lang={lang}
+          crossorigin="anonymous"
+          async
+        />
+      </div>
+    ) : (
+      <p class="mt-6 rounded-lg border border-dashed border-[--color-border] px-4 py-6 text-sm text-[--color-muted]">
+        留言板尚未配置。请在仓库开启 Discussions、安装 Giscus App，并将
+        <code class="text-[--color-text]">src/lib/giscus.ts</code> 中的
+        <code class="text-[--color-text]">repoId</code> 与
+        <code class="text-[--color-text]">categoryId</code> 替换为
+        <a
+          href="https://giscus.app/zh-CN"
+          class="text-[--color-accent] hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          giscus.app
+        </a>
+        生成的值，并<strong>保存文件</strong>后重启开发服务器。
+      </p>
+    )
+  }
+</section>

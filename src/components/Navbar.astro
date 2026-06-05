@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { sortPublishedByDate } from '../lib/content';
 import { getGroupedProjects, toProjectNavItems } from '../lib/projects';
+import { getGroupedNotesForNav } from '../lib/notes';
 import NavDropdown from './NavDropdown.astro';
 
 const navItems = [
@@ -24,6 +25,8 @@ const projectNavGroups = [
   { label: '安卓端', items: toProjectNavItems(androidProjects) },
   { label: 'Web 端', items: toProjectNavItems(webProjects) },
 ];
+
+const noteNavGroups = getGroupedNotesForNav(notes);
 ---
 
 <header class="sticky top-0 z-50 border-b border-neutral-200 bg-white shadow-sm">
@@ -65,10 +68,10 @@ const projectNavGroups = [
         isIndexActive={currentPath === '/learning' && !hasHash}
       />
       <NavDropdown
-        label="随笔"
+        label="其他"
         basePath="/notes"
-        allLabel="全部随笔"
-        items={toNavItems(notes)}
+        allLabel="全部其他"
+        groups={noteNavGroups}
         isActive={currentPath.startsWith('/notes')}
         isIndexActive={currentPath === '/notes' && !hasHash}
       />

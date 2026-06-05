@@ -59,10 +59,10 @@ const hasItems = hasGroups ? groups.some((group) => group.items.length > 0) : it
         href={basePath}
         role="menuitem"
         class:list={[
-          'block whitespace-nowrap px-4 py-2.5 text-sm transition-colors',
+          'block whitespace-nowrap px-4 py-2.5 text-sm font-semibold transition-colors',
           isIndexActive
             ? 'text-[--color-accent]'
-            : 'text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900',
+            : 'text-neutral-900 hover:bg-neutral-100',
         ]}
       >
         {allLabel}
@@ -77,7 +77,7 @@ const hasItems = hasGroups ? groups.some((group) => group.items.length > 0) : it
               groups.map((group) => (
                 <>
                   <li role="none">
-                    <span class="block whitespace-nowrap px-4 py-2 text-xs font-medium tracking-wide text-neutral-500 uppercase">
+                    <span class="block whitespace-nowrap px-4 py-2 text-sm font-semibold text-neutral-900">
                       {group.label}
                     </span>
                   </li>
@@ -86,7 +86,7 @@ const hasItems = hasGroups ? groups.some((group) => group.items.length > 0) : it
                       <a
                         href={`${basePath}#${item.id}`}
                         role="menuitem"
-                        class="block whitespace-nowrap px-4 py-2.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+                        class="block whitespace-nowrap px-4 py-2.5 text-sm font-normal text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
                       >
                         {item.title}
                       </a>
@@ -100,7 +100,7 @@ const hasItems = hasGroups ? groups.some((group) => group.items.length > 0) : it
                   <a
                     href={`${basePath}#${item.id}`}
                     role="menuitem"
-                    class="block whitespace-nowrap px-4 py-2.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+                    class="block whitespace-nowrap px-4 py-2.5 text-sm font-normal text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
                   >
                     {item.title}
                   </a>

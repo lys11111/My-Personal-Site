@@ -1,5 +1,6 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
+import GiscusComments from '../components/GiscusComments.astro';
 ---
 
 <PageLayout title="简介" description="关于龙文广">
@@ -53,10 +54,12 @@ import PageLayout from '../layouts/PageLayout.astro';
             href="https://www.xiaohongshu.com/user/profile/628b3dcd00000000210208e0?tab=note&subTab=note"
             class="text-[--color-accent] hover:underline"
             rel="noopener noreferrer"
-            target="_blank">@摄影笔记</a>
+            target="_blank">SHIKI的摄影内容运营</a>
           （<a href="/notes/photography" class="text-[--color-accent] hover:underline">站内专栏</a>）
         </li>
       </ul>
     </section>
+
+    <GiscusComments term="about-guestbook" />
   </div>
 </PageLayout>

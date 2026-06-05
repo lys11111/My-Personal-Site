@@ -2,6 +2,7 @@
 import PageLayout from './PageLayout.astro';
 import Badge from '../components/Badge.astro';
 import TagList from '../components/TagList.astro';
+import GiscusComments from '../components/GiscusComments.astro';
 import { projectStatusLabels } from '../lib/badges';
 import { formatDate } from '../lib/content';
 
@@ -19,6 +20,8 @@ interface Props {
   cover?: string;
   coverVideo?: string;
   techStack?: string[];
+  guestbook?: boolean;
+  guestbookTerm?: string;
 }
 
 const {
@@ -35,6 +38,8 @@ const {
   cover,
   coverVideo,
   techStack = [],
+  guestbook = false,
+  guestbookTerm,
 } = Astro.props;
 ---
 
@@ -132,5 +137,6 @@ const {
     <div class="prose-content">
       <slot />
     </div>
+    {guestbook && <GiscusComments term={guestbookTerm} />}
   </article>
 </PageLayout>
