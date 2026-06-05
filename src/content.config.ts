@@ -44,7 +44,13 @@ const notes = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
+    /** 随笔分类大标签，如「摄影」「站点」 */
+    category: z.string().optional(),
     tags: z.array(z.string()).default([]),
+    /** 站外链接（专栏页可填小红书主页，单篇填对应笔记） */
+    externalUrl: z.string().url().optional(),
+    /** 外链按钮文案，默认「在小红书查看」 */
+    externalLabel: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });

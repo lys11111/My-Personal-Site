@@ -2,6 +2,7 @@
 title: "这个网站是怎么运作的"
 description: "个人展示站的技术选型与内容发布流程说明"
 date: 2026-05-29
+category: "站点"
 tags: ["Meta", "Astro"]
 draft: false
 ---

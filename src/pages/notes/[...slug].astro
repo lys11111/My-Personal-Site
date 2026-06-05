@@ -13,9 +13,17 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, description, date, tags } = entry.data;
+const { title, description, date, tags, category, externalUrl, externalLabel } = entry.data;
 ---
 
-<ArticleLayout {title} {description} {date} {tags}>
+<ArticleLayout
+  {title}
+  {description}
+  {date}
+  {tags}
+  {category}
+  {externalUrl}
+  externalLabel={externalLabel ?? '在小红书查看'}
+>
   <Content />
 </ArticleLayout>

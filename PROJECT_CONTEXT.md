@@ -48,6 +48,7 @@ src/content/
 | 项目卡片 / 列表项 | `ProjectCard.astro`（首页）· `ProjectListItem.astro`（列表页） |
 | 状态徽章 | `Badge.astro` + `src/lib/badges.ts` |
 | 内容排序工具 | `src/lib/content.ts` → `sortPublishedByDate()` |
+| 随笔分类分组 | `src/lib/notes.ts` → `groupNotesByCategory()`、`getPhotographyProfileUrl()` |
 | 内容 schema | `src/content.config.ts` |
 | 静态资源（favicon、简历 PDF） | `public/` |
 | 部署流水线 | `.github/workflows/deploy-cloudflare-pages.yml` |
@@ -218,10 +219,15 @@ draft: false
 title: "标题"
 description: "摘要"
 date: 2026-05-29
+category: "摄影"              # 可选，分类大标签（如「摄影」「站点」）
 tags: ["Meta"]
+externalUrl: "https://..."    # 可选，站外链接（专栏页=小红书主页，单篇=对应笔记）
+externalLabel: "在小红书查看"  # 可选，外链按钮文案
 draft: false
 ---
 ```
+
+支持嵌套 slug：`src/content/notes/photography/xxx.md` → `/notes/photography/xxx`。摄影专栏 hub 为 `photography.md` → `/notes/photography`。
 
 ### draft 行为
 
@@ -418,11 +424,15 @@ export const webProjectIds = ['shiki-desktop-pet', 'auto-short-drama'] as const;
 | `game-art-ai-and-genres` | 游戏美术 AI 与玩法类型笔记 | AI游戏 | 美术 AI 三栏、玩法分类、核心循环、市场组合 |
 | `ai-film-industry` | AI 时代影视工业的变革 | AIGC | 虚拟制片、3DGS、世界模型与游戏场景启示 |
 
-### 随笔 `src/content/notes/`（1 篇）
+### 随笔 `src/content/notes/`（3 篇）
 
-| slug | 标题 | 说明 |
-|------|------|------|
-| `how-this-site-works` | 这个网站是怎么运作的 | Astro 静态站与内容发布流程 |
+| slug | 标题 | 分类 | 说明 |
+|------|------|------|------|
+| `photography` | 摄影 · 个人笔记 | 摄影 | 专栏 hub，外链小红书主页 |
+| `photography/window-light` | 窗边的光 | 摄影 | 首篇示例，详情页链小红书（可替换为单篇 URL） |
+| `how-this-site-works` | 这个网站是怎么运作的 | 站点 | Astro 静态站与内容发布流程 |
+
+列表页按 `category` 分组（摄影 → 站点），摄影区块顶部有「查看小红书主页」按钮。分组逻辑见 `src/lib/notes.ts`。
 
 ---
 

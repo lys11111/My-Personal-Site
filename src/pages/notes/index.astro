@@ -4,26 +4,73 @@ import ArticleCard from '../../components/ArticleCard.astro';
 import HashScroll from '../../components/HashScroll.astro';
 import { getCollection } from 'astro:content';
 import { sortPublishedByDate } from '../../lib/content';
+import {
+  groupNotesByCategory,
+  sortNoteCategories,
+  getPhotographyProfileUrl,
+} from '../../lib/notes';
 
 const notes = sortPublishedByDate(await getCollection('notes'));
+const groups = groupNotesByCategory(notes);
+const categories = sortNoteCategories(groups);
+const xhsProfileUrl = getPhotographyProfileUrl(notes);
 ---
 
 <PageLayout title="随笔" description="其他记录与思考">
   <header class="mb-10">
     <h1 class="font-serif text-4xl font-semibold">随笔</h1>
-    <p class="mt-3 w-full whitespace-nowrap text-[--color-muted]">不适合归入「学习」或「项目」的其他内容。</p>
-  </header>
-  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <p class="mt-3 max-w-2xl text-[--color-muted]">
+      不适合归入「学习」或「项目」的其他内容——含摄影爱好专栏与站点相关记录。
+    </p>
     {
-      notes.map((note) => (
-        <section id={note.id} class="scroll-mt-24">
-          <ArticleCard
-            title={note.data.title}
-            description={note.data.description}
-            date={note.data.date}
-            href={`/notes/${note.id}`}
-            tags={note.data.tags}
-          />
+      categories.length > 0 && (
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+          {categories.map((cat) => (
+            <span class="badge border border-[--color-border] bg-transparent text-[--color-muted]">
+              {cat}
+            </span>
+          ))}
+        </div>
+      )
+    }
+  </header>
+
+  <div class="space-y-14">
+    {
+      categories.map((category) => (
+        <section>
+          <div class="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-[--color-border] pb-4">
+            <h2 class="font-serif text-2xl font-medium text-[--color-text]">{category}</h2>
+            {category === '摄影' && (
+              <a
+                href={xhsProfileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="rounded-lg bg-[--color-accent] px-4 py-2 text-sm font-medium text-[--color-bg] hover:bg-[--color-accent-dim]"
+              >
+                查看小红书主页
+              </a>
+            )}
+          </div>
+          {category === '摄影' && (
+            <p class="mb-6 max-w-2xl text-sm text-[--color-muted]">
+              用镜头记录的日常与练习。站内阅读完整版，同步发布于小红书。
+            </p>
+          )}
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {(groups.get(category) ?? []).map((note) => (
+              <section id={note.id} class="scroll-mt-24">
+                <ArticleCard
+                  title={note.data.title}
+                  description={note.data.description}
+                  date={note.data.date}
+                  href={`/notes/${note.id}`}
+                  tags={note.data.tags}
+                  category={note.data.category}
+                />
+              </section>
+            ))}
+          </div>
         </section>
       ))
     }

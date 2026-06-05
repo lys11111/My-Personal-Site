@@ -18,7 +18,7 @@
 | Web 端 | Shiki · 桌宠 Agent | Electron + LLM 桌宠 |
 | Web 端 | Auto Short Drama · 短剧创作工作台 | 对话式 AIGC 短剧三阶段 Skill |
 
-学习笔记 3 篇、随笔 1 篇。完整 slug / 媒体 / 本地路径见 [`PROJECT_CONTEXT.md` — 项目总览](./PROJECT_CONTEXT.md#项目总览2026-05-31)。
+学习笔记 4 篇、随笔 4 篇。完整 slug / 媒体 / 本地路径见 [`PROJECT_CONTEXT.md` — 项目总览](./PROJECT_CONTEXT.md#项目总览2026-05-31)。
 
 ## 日常流程
 
@@ -134,7 +134,7 @@ src/
 ├── content/          # Markdown 内容
 │   ├── learning/     # 学习笔记（4）
 │   ├── projects/     # 项目展示（7）
-│   └── notes/        # 随笔（1）
+│   └── notes/        # 随笔（3，含摄影专栏）
 ├── components/       # UI 组件
 ├── layouts/          # 页面布局（ArticleLayout 支持 coverVideo）
 ├── pages/            # 路由页面
