@@ -5,6 +5,7 @@ date: 2025-10-15
 status: "prototype"
 tags: ["React", "Mobile", "Computer Vision"]
 cover: "/images/projects/aifit-cover.png"
+coverVideo: "/videos/projects/aifit-demo.mp4"
 repoUrl: "https://github.com/lys11111/AI-Fit"
 featured: true
 techStack: ["React", "Vite", "Tailwind", "Radix UI", "MediaPipe"]
